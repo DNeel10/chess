@@ -8,7 +8,7 @@ describe Player do
       subject(:player_select) { described_class.new }
       
       before do
-        user_input = 'a4'
+        user_input = 'x4'
         allow(player_select).to receive(:gets).and_return(user_input)
         allow(player_select).to receive(:valid_entry?).and_return(true)
       end
@@ -24,7 +24,7 @@ describe Player do
       subject(:player_invalid) { described_class.new }
 
       before do
-        user_input = 'x12'
+        user_input = 'a7'
         allow(player_invalid).to receive(:gets).and_return(user_input)
         allow(player_invalid).to receive(:valid_entry?).and_return(false, true)
       end
@@ -41,7 +41,7 @@ describe Player do
     subject(:player_entry) { described_class.new }
 
     it "returns true if the selected cell is on the board" do
-      user_input = 'a4'
+      user_input = 'A4'
       expect(player_entry.valid_entry?(user_input)).to be true
     end
 

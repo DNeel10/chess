@@ -42,6 +42,6 @@ class Player
 
   def convert_entry(input)
     split_array = input.split('').map(&:ord)
-    converted_array = [split_array[0] - 65, split_array[1] - 49 ]
+    converted_array = [split_array[0] - 65, split_array[1] - 49]
   end
 end
