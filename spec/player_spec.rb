@@ -51,4 +51,13 @@ describe Player do
     end
   end
 
+  describe "#convert_entry" do
+    subject(:player_convert) { described_class.new }
+
+    it "changes the user input to appropriate coordinates" do
+      input = 'A4'
+      converted_input = player_convert.convert_entry(input)
+      expect(converted_input).to eq([0, 3])
+    end
+  end
 end

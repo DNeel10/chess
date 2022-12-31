@@ -9,12 +9,19 @@ class Player
   def initialize
     @color = color
     @selected_cell = nil
+    @available_pieces = []
   end
 
   def player_turn
-    # select a cell on the board with a piece on it
+    # player selects a cell
     select_cell
-    # select cell to move the piece to
+
+    # selected cell gets passed to board to verify the selection (make sure a players 
+    # piece is on it or its a valid move location
+
+    # piece displays valid move options
+
+    # player selects a cell to move the piece to
 
   end
 
@@ -23,7 +30,7 @@ class Player
   def select_cell
     loop do
       user_input = gets.chomp
-      return user_input if valid_entry?(user_input)
+      return convert_entry(user_input) if valid_entry?(user_input)
 
       puts "Invalid Selection. Please select a valid cell"
     end
@@ -31,5 +38,10 @@ class Player
 
   def valid_entry?(input)
     input.match?(/[a-hA-H][1-8]/)
+  end
+
+  def convert_entry(input)
+    split_array = input.split('').map(&:ord)
+    converted_array = [split_array[0] - 65, split_array[1] - 49 ]
   end
 end
