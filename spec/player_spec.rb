@@ -14,9 +14,9 @@ describe Player do
       end
 
       it "completes the loop and does not display the error message" do
-        selected_cell = player_select.instance_variable_get(:@selected_cell)
+        error_message = "Invalid Selection. Please select a valid cell"
+        expect(player_select).not_to receive(:puts).with(error_message)
         player_select.select_cell
-        expect(player_select.selected_cell).to eq('a4')
       end
     end
 
@@ -31,7 +31,6 @@ describe Player do
 
       it "displays the error message once" do
         error_message = "Invalid Selection. Please select a valid cell"
-        selected_cell = player_invalid.instance_variable_get(:@selected_cell)
         expect(player_invalid).to receive(:puts).with(error_message).once
         player_invalid.select_cell
       end
@@ -39,11 +38,16 @@ describe Player do
   end
 
   describe "#valid_entry?" do
-    subject(:player_valid) { described_class.new }
+    subject(:player_entry) { described_class.new }
 
     it "returns true if the selected cell is on the board" do
       user_input = 'a4'
-      expect(player_valid.valid_entry?(user_input)).to be true
+      expect(player_entry.valid_entry?(user_input)).to be true
+    end
+
+    it "returns false if the selected cell is not on the board" do
+      user_input = 'x1'
+      expect(player_entry.valid_entry?(user_input)).to be false
     end
   end
 

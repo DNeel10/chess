@@ -23,7 +23,7 @@ class Player
   def select_cell
     loop do
       user_input = gets.chomp
-      return @selected_cell = user_input if valid_entry?(user_input)
+      return user_input if valid_entry?(user_input)
 
       puts "Invalid Selection. Please select a valid cell"
     end
