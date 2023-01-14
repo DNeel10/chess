@@ -6,8 +6,8 @@ class Knight
   def initialize(position, color)
     @position = position
     @color = color
-    @move_pattern = [[1, 2], [1, -2], [-1, 2], [-1, -2],
-                     [2, 1], [2, -1], [-2, 1], [-2, -1]]
+    @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
+                     [1, 1], [1, -1], [-1, 1], [-1, -1]]
   end
 
   def valid_moves(board)

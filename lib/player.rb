@@ -1,47 +1,77 @@
 # frozen_string_literal: true
 
 require_relative 'board'
+require_relative 'knight'
 
 class Player
   attr_reader :color
-  attr_accessor :selected_cell
+  attr_accessor :selected_piece
 
-  def initialize
+  def initialize(color)
     @color = color
-    @selected_cell = nil
-    @available_pieces = []
+    @active_pieces = []
+    @selected_piece = nil
   end
 
-  def player_turn
-    # player selects a cell
-    select_cell
+  def player_turn(board)
+    # select a piece to move
+    puts 'Select a piece on the board'
 
-    # selected cell gets passed to board to verify the selection (make sure a players 
-    # piece is on it or its a valid move location
+    @selected_piece = pick_initial_piece(board)
 
-    # piece displays valid move options
+    # display options of where the piece can go
 
-    # player selects a cell to move the piece to
+    # move the selected piece
+    puts 'Select where to move your piece'
 
+    move_piece(board)
   end
 
-  # reuse this for any time you need to select a cell (picking a piece, or selecting
-  # the new space)
-  def select_cell
+  def pick_initial_piece(board)
     loop do
-      user_input = gets.chomp
-      return convert_entry(user_input) if valid_entry?(user_input)
+      coordinates = select_cell
+      return select_piece_from_board(coordinates, board) if select_piece_from_board(coordinates, board)
 
-      puts "Invalid Selection. Please select a valid cell"
+      puts 'That is not a valid piece. Please select a valid piece'
     end
   end
 
-  def valid_entry?(input)
-    input.match?(/[a-hA-H][1-8]/)
+  # select_cell returns a coordinate on the board
+  def select_cell
+    loop do
+      user_input = gets.capitalize.chomp
+      return convert_entry(user_input) if valid_entry?(user_input)
+
+      puts 'Invalid Selection. Please select a valid cell'
+    end
   end
 
+  # ensures the user is selecting a proper chess grid notation (ex. A4)
+  def valid_entry?(input)
+    input.match?(/[A-H][1-8]/)
+  end
+
+  # returns an array with coordinates
   def convert_entry(input)
     split_array = input.split('').map(&:ord)
-    converted_array = [split_array[0] - 65, split_array[1] - 49]
+    [split_array[0] - 65, split_array[1] - 49]
+  end
+
+  def select_piece_from_board(coordinates, board, color = @color)
+    board.select_player_piece(coordinates, color)
+  end
+
+  def move_piece(board, piece = @selected_piece)
+    coordinate = select_cell
+    update_piece_on_board(coordinate, board, piece)
+    update_piece_position(coordinate)
+  end
+
+  def update_piece_on_board(coordinate, board, piece)
+    board.update_piece(coordinate, piece)
+  end
+
+  def update_piece_position(coordinate, piece)
+    piece.position = coordinate
   end
 end
