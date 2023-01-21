@@ -11,6 +11,7 @@ class Player
     @color = color
     @active_pieces = []
     @selected_piece = nil
+    @king_in_check = false
   end
 
   def player_turn(board)
@@ -20,6 +21,7 @@ class Player
     @selected_piece = pick_initial_piece(board)
 
     # display options of where the piece can go
+    # selected_piece.display_valid_moves
 
     # move the selected piece
     puts 'Select where to move your piece'
@@ -61,17 +63,45 @@ class Player
     board.select_player_piece(coordinates, color)
   end
 
+  # TODO: This should be a loop, needs to check if legal move
   def move_piece(board, piece = @selected_piece)
-    coordinate = select_cell
-    update_piece_on_board(coordinate, board, piece)
-    update_piece_position(coordinate)
+    loop do
+      coordinates = select_cell
+      return occupy_space(coordinates, board, piece) if legal_move_for_piece?(coordinates, board, piece) &&
+                                                        board.open_space?
+      return capture_piece(coordinates, board, piece) if legal_move_for_piece?(coordinates, board, piece) &&
+                                                         board.opponent_piece?
+      
+      puts 'Ineligible move. Please choose a valid move'
+    end
   end
 
-  def update_piece_on_board(coordinate, board, piece)
-    board.update_piece(coordinate, piece)
+  def update_piece_on_board(coordinates, board, piece = @selected_piece)
+    board.update_piece(coordinates, piece)
   end
 
-  def update_piece_position(coordinate, piece)
-    piece.position = coordinate
+  def update_piece_position(coordinates, piece = @selected_piece)
+    piece.position = coordinates
+  end
+
+  def occupy_space(coordinates, board, piece = @selected_piece)
+    update_piece_on_board(coordinates, board, piece)
+    update_piece_position(coordinates)
+    reset_piece_moves(piece)
+  end
+
+  def capture_piece(coordinates, board, piece = @selected_piece)
+    board.remove_piece(coordinates)
+    update_piece_on_board(coordinates, board)
+    update_piece_position(coordinates, piece)
+    reset_piece_moves(piece)
+  end
+
+  def legal_move_for_piece?(coordinates, board, piece = @selected_piece)
+    piece.legal_move?(board, coordinates)
+  end
+
+  def reset_piece_moves(piece = @selected_piece)
+    piece.reset_moves
   end
 end

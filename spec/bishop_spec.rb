@@ -1,5 +1,6 @@
 require './lib/bishop'
 require './lib/board'
+require './lib/knight'
 
 describe Bishop do
   describe '#valid_moves' do
@@ -83,4 +84,18 @@ describe Bishop do
       expect(move_down_left_array).to eq([[6, 6], [5, 5], [4, 4], [3, 3], [2, 2], [1, 1], [0, 0]])
     end
   end
+
+  context "a piece has other player pieces in its path" do
+    subject(:bishop_impeded) { described_class.new([3, 3], 'White') }
+    let(:board_grid) { Board.new }
+
+    it 'prevents moves when a piece blocks its path' do
+      down_left_array = bishop_impeded.instance_variable_get(:@moves)
+      board_grid.grid[2][2] = Knight.new([2, 2], 'White')
+      bishop_impeded.move_down_left(board_grid)
+      expect(down_left_array).to eq([])
+    end
+  end
+
+
 end

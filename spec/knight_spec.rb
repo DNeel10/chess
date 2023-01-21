@@ -28,15 +28,15 @@ describe Knight do
       subject(:knight_restricted) { described_class.new([0, 1], 'Black') }
 
       it 'removes moves where a players own piece is currently occupying' do
-        board = Array.new(3) { Array.new(3, nil) }
-        board[1][3] = Pawn.new([1, 3], 'Black')
+        board = Board.new
+        board.grid[1][3] = Pawn.new([1, 3], 'Black')
         valid_list = knight_restricted.valid_moves(board)
         expect(valid_list).to eq([[2, 2], [2, 0]])
       end
 
       it 'does not remove a move where an enemy players piece is currently occupying' do
-        board = Array.new(3) { Array.new(3, nil) }
-        board[1][3] = Pawn.new([1, 3], 'White')
+        board = Board.new
+        board.grid[1][3] = Pawn.new([1, 3], 'White')
         valid_list = knight_restricted.valid_moves(board)
         expect(valid_list).to eq([[1, 3], [2, 2], [2, 0]])
       end
@@ -44,18 +44,14 @@ describe Knight do
   end
 
   describe "#legal_moves?" do
-    context "a player selects coordinates included in lthe valid moves array" do
+    context "a player selects coordinates included in the valid moves array" do
       subject(:knight_legal) { described_class.new([0, 1], 'White') }
-      let(:board_legal) { Board.new }
-
-      before do
-        allow(knight_legal).to receive(:valid_moves).with(board_legal).and_return([[1, 3], [2, 2], [2, 0]])
-      end
 
       it 'returns true' do
         coords = [1, 3]
-        legal_check = knight_legal.legal_move?(board_legal, coords)
-        expect(legal_check).to be true
+        knight_legal.instance_variable_set(:@moves, [[1, 3], [2, 2], [2, 0]])
+        move_list = knight_legal.instance_variable_get(:@moves)
+        expect(knight_legal.legal_move?(coords, move_list)).to be true
       end
     end
 

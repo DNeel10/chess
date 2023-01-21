@@ -8,18 +8,18 @@ class Knight
     @color = color
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
+    @moves = []
   end
 
-  def valid_moves(board)
-    valid_moves_list = []
+  def valid_moves(board, moves = @moves)
     potential_moves.each do |move|
       if board[move[0]][move[1]].nil?
-        valid_moves_list << move
+        moves << move
       else
-        valid_moves_list << move unless board[move[0]][move[1]].color == @color
+        moves << move unless board[move[0]][move[1]].color == @color
       end
     end
-    valid_moves_list
+    moves
   end
 
   def potential_moves

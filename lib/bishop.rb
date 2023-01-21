@@ -29,7 +29,7 @@ class Bishop
 
       new_move = [current[0] + 1, current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move)
+      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
     end
   end
 
@@ -43,7 +43,7 @@ class Bishop
 
       new_move = [current[0] + 1, current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move)
+      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
     end
   end
 
@@ -57,7 +57,7 @@ class Bishop
 
       new_move = [current[0] - 1, current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move)
+      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
     end
   end
 
@@ -71,7 +71,7 @@ class Bishop
 
       new_move = [current[0] - 1, current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move)
+      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
     end
   end
 
@@ -79,4 +79,7 @@ class Bishop
     moves.include?(coordinates)
   end
 
+  def reset_moves
+    @moves = []
+  end
 end

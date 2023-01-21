@@ -2,7 +2,7 @@ require './lib/rook'
 require './lib/board'
 
 describe Rook do
-  describe '#potential_moves' do
+  describe '#valid_moves' do
     subject(:rook_move) { described_class.new([0, 0], 'White') }
     let(:board_grid) { Board.new }
 
@@ -13,9 +13,9 @@ describe Rook do
 
     it 'returns an array of moves in each direction' do
       move_array = rook_move.instance_variable_get(:@moves)
-      rook_move.potential_moves(board_grid)
+      rook_move.valid_moves(board_grid)
       expect(move_array).to eq([[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
-                               [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]])
+                                [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]])
     end
   end
 
