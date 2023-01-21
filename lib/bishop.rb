@@ -53,7 +53,7 @@ class Bishop
     while queue
       current = queue.shift
 
-      return if current[1] >= 7 || current[0] <= 0||board.players_piece?(current, color)
+      return if current[1] >= 7 || current[0] <= 0 || board.players_piece?(current, color)
 
       new_move = [current[0] - 1, current[1] + 1]
       queue << new_move
