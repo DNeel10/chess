@@ -79,7 +79,9 @@ class Rook
     end
   end
 
-  def reset_moves
+  def update_position(board, coordinates)
+    @position = coordinates
     @moves = []
+    valid_moves(board)
   end
 end

@@ -5,7 +5,7 @@ require './lib/knight'
 describe Player do
   describe "#pick_initial_piece" do
     context "a player selects a cell with a piece on it" do
-      subject(:player_initial) { described_class.new('White') }
+      subject(:player_initial) { described_class.new('White', Pieces.new) }
       let(:board_valid) { instance_double(Board) }
 
       before do
@@ -24,7 +24,7 @@ describe Player do
     end
 
     context "a player selects a cell without a piece on it once" do
-      subject(:player_initial) { described_class.new('White') }
+      subject(:player_initial) { described_class.new('White', Pieces.new) }
       let(:board_invalid) { instance_double(Board) }
 
       before do
@@ -45,7 +45,7 @@ describe Player do
     end
 
     context "a player selects a cell with the other players piece on it once" do
-      subject(:player_initial) { described_class.new('White') }
+      subject(:player_initial) { described_class.new('White', Pieces.new) }
       let(:board_invalid) { instance_double(Board) }
 
       before do
@@ -65,7 +65,7 @@ describe Player do
     
   describe "#select_cell" do
     context "a player selects a valid cell" do
-      subject(:player_select) { described_class.new('White') }
+      subject(:player_select) { described_class.new('White', Pieces.new) }
 
       before do
         user_input = 'B4'
@@ -80,7 +80,7 @@ describe Player do
     end
 
     context "a player selects an invalid cell once" do
-      subject(:player_invalid) { described_class.new('White') }
+      subject(:player_invalid) { described_class.new('White', Pieces.new) }
 
       before do
         user_input_invalid = 'x7'
@@ -97,7 +97,7 @@ describe Player do
   end
 
   describe "#valid_entry?" do
-    subject(:player_entry) { described_class.new('White') }
+    subject(:player_entry) { described_class.new('White', Pieces.new) }
 
     it "returns true if the selected cell is on the board" do
       user_input = 'A4'
@@ -111,12 +111,24 @@ describe Player do
   end
 
   describe "#convert_entry" do
-    subject(:player_convert) { described_class.new('White') }
+    subject(:player_convert) { described_class.new('White', Pieces.new) }
 
     it "changes the user input to appropriate coordinates" do
       input = 'A4'
       converted_input = player_convert.convert_entry(input)
       expect(converted_input).to eq([0, 3])
+    end
+  end
+
+  describe "#set_up_board" do
+    let(:board_grid) { Board.new }
+    subject(:player_setup) { described_class.new('White', Pieces.new, board_grid) }
+
+
+    it "adds all 16 pieces to the board" do
+      player_board = player_setup.instance_variable_get(:@board)
+      pieces_on_board = player_board.grid.flatten.compact!.length
+      expect(pieces_on_board).to eq(16)
     end
   end
 end

@@ -3,7 +3,7 @@ require './lib/board'
 
 describe Rook do
   describe '#valid_moves' do
-    subject(:rook_move) { described_class.new([0, 0], 'White') }
+    subject(:rook_move) { described_class.new([3, 3], 'White') }
     let(:board_grid) { Board.new }
 
     before do
@@ -14,8 +14,10 @@ describe Rook do
     it 'returns an array of moves in each direction' do
       move_array = rook_move.instance_variable_get(:@moves)
       rook_move.valid_moves(board_grid)
-      expect(move_array).to eq([[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
-                                [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]])
+      expect(move_array).to match_array([[4, 3], [5, 3], [6, 3], [7, 3], # move_up
+                                         [2, 3], [1, 3], [0, 3],         # move_down
+                                         [3, 4], [3, 5], [3, 6], [3, 7], # move_right
+                                         [3, 2], [3, 1], [3, 0]])        # move_left
     end
   end
 
@@ -86,4 +88,25 @@ describe Rook do
                                      [2, 0], [1, 0], [0, 0]])
     end
   end
+
+  describe "#update_position" do
+    subject(:rook_update) { described_class.new([0, 0], 'White') }
+    let(:board_grid) { Board.new }
+
+    it 'updates the position of the piece' do
+      rook_update.update_position(board_grid, [0, 7])
+      rook_pos = rook_update.instance_variable_get(:@position)
+      expect(rook_pos).to eq([0, 7])
+    end
+
+    it 'updates the moves array' do
+      rook_update.update_position(board_grid, [0, 7])
+      rook_moves = rook_update.instance_variable_get(:@moves)
+      expect(rook_moves).to match_array([[0, 6], [0, 5], [0, 4], [0, 3],
+                                         [0, 2], [0, 1], [0, 0], [1, 7],
+                                         [2, 7], [3, 7], [4, 7], [5, 7],
+                                         [6, 7], [7, 7]])
+    end
+  end
+
 end

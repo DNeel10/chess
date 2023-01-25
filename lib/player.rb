@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 require_relative 'board'
-require_relative 'knight'
+require_relative 'pieces'
 
 class Player
   attr_reader :color
-  attr_accessor :selected_piece
+  attr_accessor :selected_piece, :active_pieces, :pieces, :board
 
-  def initialize(color)
+  def initialize(color, pieces, board = Board.new)
     @color = color
-    @active_pieces = []
+    @active_pieces = pieces.generate_pieces(color)
     @selected_piece = nil
     @king_in_check = false
+    @board = board
+    set_up_board(board)
   end
 
   def player_turn(board)
@@ -63,7 +65,6 @@ class Player
     board.select_player_piece(coordinates, color)
   end
 
-  # TODO: This should be a loop, needs to check if legal move
   def move_piece(board, piece = @selected_piece)
     loop do
       coordinates = select_cell
@@ -71,7 +72,7 @@ class Player
                                                         board.open_space?
       return capture_piece(coordinates, board, piece) if legal_move_for_piece?(coordinates, board, piece) &&
                                                          board.opponent_piece?
-      
+
       puts 'Ineligible move. Please choose a valid move'
     end
   end
@@ -81,27 +82,27 @@ class Player
   end
 
   def update_piece_position(coordinates, piece = @selected_piece)
-    piece.position = coordinates
+    piece.update_position(coordinates)
   end
 
   def occupy_space(coordinates, board, piece = @selected_piece)
     update_piece_on_board(coordinates, board, piece)
     update_piece_position(coordinates)
-    reset_piece_moves(piece)
   end
 
   def capture_piece(coordinates, board, piece = @selected_piece)
     board.remove_piece(coordinates)
     update_piece_on_board(coordinates, board)
     update_piece_position(coordinates, piece)
-    reset_piece_moves(piece)
   end
 
   def legal_move_for_piece?(coordinates, board, piece = @selected_piece)
     piece.legal_move?(board, coordinates)
   end
 
-  def reset_piece_moves(piece = @selected_piece)
-    piece.reset_moves
+  def set_up_board(board)
+    @active_pieces.each do |piece|
+      board.update_piece(piece.position, piece)
+    end
   end
 end

@@ -1,11 +1,12 @@
 require './lib/board'
 require './lib/knight'
 require './lib/player'
+require './lib/pieces'
 
 describe Board do
   describe "#select_player_piece" do
     subject(:board_piece) { described_class.new }
-    let(:player_one) { Player.new('White') }
+    let(:player_one) { Player.new('White', Pieces.new) }
 
     it "returns a piece when a valid cell is selected" do
       knight = Knight.new([0, 1], 'White')
@@ -41,7 +42,6 @@ describe Board do
       expect(updated_cell).to eq(knight)
     end
   end
-      
 
 end
 

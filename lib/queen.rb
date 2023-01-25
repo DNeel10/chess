@@ -138,7 +138,9 @@ class Queen
     end
   end
 
-  def reset_moves
+  def update_position(coordinates)
+    @position = coordinates
     @moves = []
+    valid_moves(board)
   end
 end

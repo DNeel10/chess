@@ -27,4 +27,10 @@ class Pawn
     move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
                 .select { |move| move.all? { |n| n >= 0 && n <= 7 } }
   end
+
+  def update_position(coordinates)
+    @position = coordinates
+    @moves = []
+    valid_moves(board)
+  end
 end

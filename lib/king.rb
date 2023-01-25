@@ -1,4 +1,4 @@
-class Knight
+class King
   attr_reader :move_pattern, :color
   attr_accessor :position
 
@@ -9,14 +9,15 @@ class Knight
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
+    @check = false
   end
 
   def valid_moves(board, moves = @moves)
     potential_moves.each do |move|
-      if board[move[0]][move[1]].nil?
+      if board.open_space?(move)
         moves << move
       else
-        moves << move unless board[move[0]][move[1]].color == @color
+        moves << move unless board.players_piece?(move, color)
       end
     end
     moves
@@ -29,6 +30,12 @@ class Knight
 
   def legal_move?(board, coordinates)
     valid_moves(board).include?(coordinates)
+  end
+
+  def update_position(coordinates)
+    @position = coordinates
+    @moves = []
+    valid_moves(board)
   end
 
 end
