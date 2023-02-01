@@ -5,12 +5,13 @@ require_relative 'pieces'
 
 class Player
   attr_reader :color
-  attr_accessor :selected_piece, :active_pieces, :pieces, :board
+  attr_accessor :selected_piece, :active_pieces, :pieces, :board, :king
 
   def initialize(color, pieces, board = Board.new)
     @color = color
-    @active_pieces = pieces.generate_pieces(color)
+    @active_pieces = pieces.generate_pieces(color, board)
     @selected_piece = nil
+    @king = select_king
     @king_in_check = false
     @board = board
     set_up_board(board)
@@ -102,7 +103,14 @@ class Player
 
   def set_up_board(board)
     @active_pieces.each do |piece|
+      @king = piece if piece.name == 'King'
+
       board.update_piece(piece.position, piece)
     end
   end
+
+  def select_king
+    active_pieces.find { |piece| piece.name == 'King' }
+  end
+
 end

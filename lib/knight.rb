@@ -1,14 +1,20 @@
 class Knight
-  attr_reader :move_pattern, :color
+  attr_reader :move_pattern, :color, :name
   attr_accessor :position, :moves
 
   # what needs to be set up when a piece is created in the game
-  def initialize(position, color)
+  def initialize(position, color, board)
     @position = position
     @color = color
+    @name = 'Knight'
     @move_pattern = [[1, 2], [1, -2], [-1, 2], [-1, -2],
                      [2, 1], [2, -1], [-2, 1], [-2, -1]]
     @moves = []
+    valid_moves(board)
+  end
+
+  def to_s
+    "#{@name}, #{@position}"
   end
 
   def valid_moves(board, moves = @moves)

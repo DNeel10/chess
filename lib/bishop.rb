@@ -1,13 +1,19 @@
 class Bishop
   attr_reader :move_pattern, :color
-  attr_accessor :position, :moves
+  attr_accessor :position, :moves, :name
 
   # what needs to be set up when a piece is created in the game
-  def initialize(position, color)
+  def initialize(position, color, board)
     @position = position
     @color = color
+    @name = 'Bishop'
     @move_pattern = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
+    valid_moves(board)
+  end
+
+  def to_s
+    "#{@name}, #{@position}"
   end
 
   def valid_moves(board)
@@ -25,7 +31,7 @@ class Bishop
     while queue
       current = queue.shift
 
-      return if current[1] >= 7 || current[0] >= 7 || board.players_piece?(current, color)
+      return if current[1] >= 7 || current[0] >= 7 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
 
       new_move = [current[0] + 1, current[1] + 1]
       queue << new_move
@@ -39,7 +45,7 @@ class Bishop
     while queue
       current = queue.shift
 
-      return if current[1] <= 0 || current[0] >= 7 ||board.players_piece?(current, color)
+      return if current[1] <= 0 || current[0] >= 7 ||board.players_piece?(current, color) || board.opponent_piece?(current, color)
 
       new_move = [current[0] + 1, current[1] - 1]
       queue << new_move
@@ -53,7 +59,7 @@ class Bishop
     while queue
       current = queue.shift
 
-      return if current[1] >= 7 || current[0] <= 0 || board.players_piece?(current, color)
+      return if current[1] >= 7 || current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
 
       new_move = [current[0] - 1, current[1] + 1]
       queue << new_move
@@ -67,7 +73,7 @@ class Bishop
     while queue
       current = queue.shift
 
-      return if current[1] <= 0 || current[0] <= 0 || board.players_piece?(current, color)
+      return if current[1] <= 0 || current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
 
       new_move = [current[0] - 1, current[1] - 1]
       queue << new_move

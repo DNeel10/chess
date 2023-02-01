@@ -1,15 +1,21 @@
 class King
-  attr_reader :move_pattern, :color
-  attr_accessor :position
+  attr_reader :move_pattern, :color, :name
+  attr_accessor :position, :moves
 
   # what needs to be set up when a piece is created in the game
-  def initialize(position, color)
+  def initialize(position, color, board)
     @position = position
     @color = color
+    @name = 'King'
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
     @check = false
+    valid_moves(board)
+  end
+
+  def to_s
+    "#{@name}, #{@position}"
   end
 
   def valid_moves(board, moves = @moves)

@@ -4,8 +4,9 @@ require './lib/knight'
 
 describe Queen do
   describe '#valid_moves' do
-    subject(:queen_move) { described_class.new([3, 3], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_move) { described_class.new([3, 3], 'White', board_grid) }
+
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -27,8 +28,8 @@ describe Queen do
   end
 
   describe '#move_right' do
-    subject(:queen_right) { described_class.new([0, 0], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_right) { described_class.new([0, 0], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -44,8 +45,8 @@ describe Queen do
   end
 
   describe '#move_up' do
-    subject(:queen_up) { described_class.new([0, 0], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_up) { described_class.new([0, 0], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -61,8 +62,8 @@ describe Queen do
   end
 
   describe '#move_left' do
-    subject(:queen_left) { described_class.new([0, 7], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_left) { described_class.new([0, 7], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -78,8 +79,8 @@ describe Queen do
   end
 
   describe '#move_down' do
-    subject(:queen_down) { described_class.new([7, 0], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_down) { described_class.new([7, 0], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -94,8 +95,8 @@ describe Queen do
     end
   end
   describe '#move_up_right' do
-    subject(:queen_up_right) { described_class.new([0, 0], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_up_right) { described_class.new([0, 0], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -111,8 +112,8 @@ describe Queen do
   end
 
   describe '#move_down_right' do
-    subject(:queen_down_right) { described_class.new([7, 0], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_down_right) { described_class.new([7, 0], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -127,8 +128,8 @@ describe Queen do
   end
 
   describe '#move_up_left' do
-    subject(:queen_up_left) { described_class.new([0, 7], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_up_left) { described_class.new([0, 7], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -143,8 +144,8 @@ describe Queen do
   end
 
   describe '#move_down_left' do
-    subject(:queen_down_left) { described_class.new([7, 7], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_down_left) { described_class.new([7, 7], 'White', board_grid) }
 
     before do
       allow(board_grid).to receive(:open_space?).and_return true
@@ -159,12 +160,12 @@ describe Queen do
   end
 
   context "a piece has other player pieces in its path" do
-    subject(:queen_impeded) { described_class.new([3, 3], 'White') }
     let(:board_grid) { Board.new }
+    subject(:queen_impeded) { described_class.new([3, 3], 'White', board_grid) }
 
     it 'prevents moves when a piece blocks its path' do
       down_left_array = queen_impeded.instance_variable_get(:@moves)
-      board_grid.grid[2][2] = Knight.new([2, 2], 'White')
+      board_grid.grid[2][2] = Knight.new([2, 2], 'White', board_grid)
       queen_impeded.move_down_left(board_grid)
       expect(down_left_array).to eq([])
     end
