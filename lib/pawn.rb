@@ -15,19 +15,19 @@ class Pawn
     @white_attacking_moves = [[1, 1], [1, -1]]
     @black_attacking_moves = [[-1, 1], [-1, -1]]
     @moves = []
-    # valid_moves(board)
+    valid_moves(board)
   end
 
   def to_s
     "#{@name}, #{@position}"
   end
 
-  def valid_moves(board, moves = @moves)
-    if @first_move == false
+  def valid_moves(board)
+    case @first_move
+    when false
       move_one_space(board)
     else
       initial_move(board)
-      @first_move = false
     end
   end
 
@@ -52,14 +52,13 @@ class Pawn
     end
   end
 
+  def legal_move?(coordinates, moves = @moves)
+    moves.include?(coordinates)
+  end
+
   def update_position(coordinates)
     @position = coordinates
     @moves = []
     valid_moves(board)
   end
 end
-
-board = Board.new
-pawn = Pawn.new([1,0], 'White', board)
-
-p pawn.moves

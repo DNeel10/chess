@@ -10,7 +10,7 @@ class Queen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
-    # valid_moves(board)
+    valid_moves(board)
   end
 
   def to_s
