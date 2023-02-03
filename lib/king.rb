@@ -20,6 +20,8 @@ class King
   end
 
   def valid_moves
+    @moves = []
+    
     potential_moves.each do |move|
       if board.open_space?(move)
         moves << move

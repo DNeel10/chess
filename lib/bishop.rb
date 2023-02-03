@@ -18,6 +18,8 @@ class Bishop
   end
 
   def valid_moves
+    @moves = []
+    
     move_up_right
     move_up_left
     move_down_right

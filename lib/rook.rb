@@ -11,7 +11,7 @@ class Rook
     @name = 'Rook'
     # @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0]]
     @moves = []
-    valid_moves(board)
+    valid_moves
   end
 
   def to_s
@@ -20,12 +20,13 @@ class Rook
 
   # rook can use move pattern in one (up, down, left, right) direction up to where another piece is 
   # (capturing, or one before)
-  def valid_moves(board)
+  def valid_moves
     @moves = []
-    move_right(board)
-    move_left(board)
-    move_up(board)
-    move_down(board)
+
+    move_right
+    move_left
+    move_up
+    move_down
   end
 
   def legal_move?(coordinates, moves = @moves)

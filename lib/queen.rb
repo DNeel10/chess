@@ -19,6 +19,8 @@ class Queen
   end
 
   def valid_moves
+    @moves = []
+    
     move_right
     move_left
     move_up
