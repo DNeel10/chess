@@ -7,7 +7,7 @@ class Player
   attr_reader :color
   attr_accessor :selected_piece, :active_pieces, :pieces, :board, :king
 
-  def initialize(color, pieces, board = Board.new)
+  def initialize(color, pieces, board)
     @color = color
     @active_pieces = pieces.generate_pieces(color, board)
     @selected_piece = nil
@@ -20,8 +20,10 @@ class Player
   def player_turn(board)
     # select a piece to move
     puts 'Select a piece on the board'
+    board.display
 
     @selected_piece = pick_initial_piece(board)
+    puts "#{@selected_piece.moves}"
 
     # display options of where the piece can go
     # selected_piece.display_valid_moves
@@ -35,6 +37,7 @@ class Player
   def pick_initial_piece(board)
     loop do
       coordinates = select_cell
+      
       return select_piece_from_board(coordinates, board) if select_piece_from_board(coordinates, board)
 
       puts 'That is not a valid piece. Please select a valid piece'
@@ -59,7 +62,7 @@ class Player
   # returns an array with coordinates
   def convert_entry(input)
     split_array = input.split('').map(&:ord)
-    [split_array[0] - 65, split_array[1] - 49]
+    [split_array[1] - 49, split_array[0] - 65]
   end
 
   def select_piece_from_board(coordinates, board, color = @color)
@@ -69,16 +72,18 @@ class Player
   def move_piece(board, piece = @selected_piece)
     loop do
       coordinates = select_cell
-      return occupy_space(coordinates, board, piece) if legal_move_for_piece?(coordinates, board, piece) &&
-                                                        board.open_space?
-      return capture_piece(coordinates, board, piece) if legal_move_for_piece?(coordinates, board, piece) &&
-                                                         board.opponent_piece?
+
+      return occupy_space(coordinates, board, piece) if legal_move_for_piece?(coordinates, piece) &&
+                                                        board.open_space?(coordinates)
+      return capture_piece(coordinates, board, piece) if legal_move_for_piece?(coordinates, piece) &&
+                                                         board.opponent_piece?(coordinates, color)
 
       puts 'Ineligible move. Please choose a valid move'
     end
   end
 
   def update_piece_on_board(coordinates, board, piece = @selected_piece)
+    board.move_piece(piece.position)
     board.update_piece(coordinates, piece)
   end
 
@@ -97,10 +102,15 @@ class Player
     update_piece_position(coordinates, piece)
   end
 
-  def legal_move_for_piece?(coordinates, board, piece = @selected_piece)
-    piece.legal_move?(board, coordinates)
+  def legal_move_for_piece?(coordinates, piece = @selected_piece)
+    piece.legal_move?(coordinates)
   end
 
+  def select_king
+    active_pieces.find { |piece| piece.name == 'King' }
+  end
+  
+  # this should get moved to game class
   def set_up_board(board)
     @active_pieces.each do |piece|
       @king = piece if piece.name == 'King'
@@ -108,9 +118,4 @@ class Player
       board.update_piece(piece.position, piece)
     end
   end
-
-  def select_king
-    active_pieces.find { |piece| piece.name == 'King' }
-  end
-
 end

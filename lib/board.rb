@@ -1,5 +1,5 @@
 
-require_relative 'knight'
+# require_relative 'knight'
 
 class Board
   attr_accessor :grid
@@ -17,8 +17,9 @@ class Board
   end
 
   def select_player_piece(coordinates, player_color)
-    player_piece = @grid[coordinates[0]][coordinates[1]]
-    return player_piece if players_piece?(coordinates, player_color)
+    player_piece = @grid[coordinates[0]][coordinates[1]] if players_piece?(coordinates, player_color)
+    player_piece&.valid_moves
+    return player_piece unless player_piece&.moves == []
   end
 
   def update_piece(coordinates, piece)
@@ -31,6 +32,10 @@ class Board
 
   def remove_piece(coordinates)
     @grid[coordinates[0]][coordinates[1]].position = nil
+    @grid[coordinates[0]][coordinates[1]] = nil
+  end
+
+  def move_piece(coordinates)
     @grid[coordinates[0]][coordinates[1]] = nil
   end
 

@@ -6,15 +6,15 @@ describe Player do
   describe "#pick_initial_piece" do
     context "a player selects a cell with a piece on it" do
       let(:board_valid) { Board.new }
-      subject(:player_initial) { described_class.new('White', Pieces.new(board_valid)) }
+      subject(:player_initial) { described_class.new('White', Pieces.new(board_valid), board_valid) }
 
 
       before do
         player_color = player_initial.instance_variable_get(:@color)
         initial_piece = [0,1]
-        knight = Knight.new([0, 1], 'White', board_valid)
+        rook = board_valid.grid[0][1]
         allow(player_initial).to receive(:select_cell).and_return(initial_piece)
-        allow(board_valid).to receive(:select_player_piece).with(initial_piece, player_color).and_return(knight)
+        allow(board_valid).to receive(:select_player_piece).with(initial_piece, player_color).and_return(rook)
       end
 
       it "completes the loop and does not display the error message" do
@@ -26,7 +26,7 @@ describe Player do
 
     context "a player selects a cell without a piece on it once" do
       let(:board_invalid) { Board.new }
-      subject(:player_initial) { described_class.new('White', Pieces.new(board_invalid)) }
+      subject(:player_initial) { described_class.new('White', Pieces.new(board_invalid), board_invalid) }
 
 
       before do
@@ -48,7 +48,7 @@ describe Player do
 
     context "a player selects a cell with the other players piece on it once" do
       let(:board_invalid) { Board.new }
-      subject(:player_initial) { described_class.new('White', Pieces.new(board_invalid)) }
+      subject(:player_initial) { described_class.new('White', Pieces.new(board_invalid), board_invalid) }
 
       before do
         initial_piece = [0, 1]
@@ -68,7 +68,7 @@ describe Player do
   describe "#select_cell" do
     context "a player selects a valid cell" do
       let(:board_grid) { Board.new }
-      subject(:player_select) { described_class.new('White', Pieces.new(board_grid)) }
+      subject(:player_select) { described_class.new('White', Pieces.new(board_grid), board_grid) }
 
       before do
         user_input = 'B4'
@@ -84,7 +84,7 @@ describe Player do
 
     context "a player selects an invalid cell once" do
       let(:board_grid) { Board.new }
-      subject(:player_invalid) { described_class.new('White', Pieces.new(board_grid)) }
+      subject(:player_invalid) { described_class.new('White', Pieces.new(board_grid), board_grid) }
 
       before do
         user_input_invalid = 'x7'
@@ -102,7 +102,7 @@ describe Player do
 
   describe "#valid_entry?" do
     let(:board_grid) { Board.new }
-    subject(:player_entry) { described_class.new('White', Pieces.new(board_grid)) }
+    subject(:player_entry) { described_class.new('White', Pieces.new(board_grid), board_grid) }
 
     it "returns true if the selected cell is on the board" do
       user_input = 'A4'
@@ -117,7 +117,7 @@ describe Player do
 
   describe "#convert_entry" do
     let(:board_grid) { Board.new }
-    subject(:player_convert) { described_class.new('White', Pieces.new(board_grid)) }
+    subject(:player_convert) { described_class.new('White', Pieces.new(board_grid), board_grid) }
 
     it "changes the user input to appropriate coordinates" do
       input = 'A4'

@@ -1,12 +1,13 @@
 require_relative 'board'
 
 class Pawn
-  attr_accessor :moves
-  attr_reader :color, :position, :attacking_moves, :name, :white_move_pattern,
-              :black_move_pattern, :black_attacking_moves, :white_attacking_moves, :first_move
+  attr_accessor :moves, :position, :first_move
+  attr_reader :color, :attacking_moves, :name, :white_move_pattern, :board,
+              :black_move_pattern, :black_attacking_moves, :white_attacking_moves
 
   def initialize(position, color, board)
     @position = position
+    @board = board
     @color = color
     @name = 'Pawn'
     @first_move = true
@@ -15,23 +16,25 @@ class Pawn
     @white_attacking_moves = [[1, 1], [1, -1]]
     @black_attacking_moves = [[-1, 1], [-1, -1]]
     @moves = []
-    valid_moves(board)
+    valid_moves
   end
 
   def to_s
-    "#{@name}, #{@position}"
+    "#{@name}, #{@position}, #{first_move}"
   end
 
-  def valid_moves(board)
-    case @first_move
-    when false
-      move_one_space(board)
+  def valid_moves
+    @moves = []
+    case first_move
+    when true
+      initial_move
     else
-      initial_move(board)
+      move_one_space
     end
+    # attack_moves(board)
   end
 
-  def move_one_space(board = @board, position = @position, color = @color, moves = @moves)
+  def move_one_space
     case color
     when 'White'
       new_move = [position[0] + white_move_pattern.first[0], position[1] + white_move_pattern.first[1]]
@@ -41,7 +44,7 @@ class Pawn
     moves << new_move if board.open_space?(new_move)
   end
 
-  def initial_move(board = @board, position = @position, color = @color, moves = @moves)
+  def initial_move
     case color
     when 'White'
       white_move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
@@ -52,13 +55,18 @@ class Pawn
     end
   end
 
+  def attack_moves(board, position = @position, color = @color, moves = @moves)
+    # TODO : build moves to attack opponent pieces if diagonal
+  end
+
   def legal_move?(coordinates, moves = @moves)
     moves.include?(coordinates)
   end
 
   def update_position(coordinates)
     @position = coordinates
+    @first_move = false
     @moves = []
-    valid_moves(board)
+    valid_moves
   end
 end

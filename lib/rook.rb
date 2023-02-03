@@ -21,6 +21,7 @@ class Rook
   # rook can use move pattern in one (up, down, left, right) direction up to where another piece is 
   # (capturing, or one before)
   def valid_moves(board)
+    @moves = []
     move_right(board)
     move_left(board)
     move_up(board)
@@ -87,12 +88,9 @@ class Rook
     end
   end
 
-  def update_position(board, coordinates)
+  def update_position(coordinates)
     @position = coordinates
     @moves = []
-    valid_moves(board)
+    valid_moves
   end
 end
-board = Board.new
-rook = Rook.new([0, 0], 'White', board)
-puts "#{rook.moves}"

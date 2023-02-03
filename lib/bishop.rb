@@ -1,31 +1,32 @@
 class Bishop
   attr_reader :move_pattern, :color
-  attr_accessor :position, :moves, :name
+  attr_accessor :position, :moves, :name, :board
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
     @position = position
     @color = color
+    @board = board
     @name = 'Bishop'
     @move_pattern = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
-    valid_moves(board)
+    valid_moves
   end
 
   def to_s
     "#{@name}, #{@position}"
   end
 
-  def valid_moves(board)
-    move_up_right(board)
-    move_up_left(board)
-    move_down_right(board)
-    move_down_left(board)
+  def valid_moves
+    move_up_right
+    move_up_left
+    move_down_right
+    move_down_left
   end
 
   # bishop can move on a diagonal line any number of spaces (stopped by capturing a piece
   # or one before the players piece)
-  def move_up_right(board, moves = @moves, position = @position)
+  def move_up_right
     queue = [position]
 
     while queue
@@ -39,7 +40,7 @@ class Bishop
     end
   end
 
-  def move_up_left(board, moves = @moves, position = @position)
+  def move_up_left
     queue = [position]
 
     while queue
@@ -53,7 +54,7 @@ class Bishop
     end
   end
 
-  def move_down_right(board, moves = @moves, position = @position)
+  def move_down_right
     queue = [position]
 
     while queue
@@ -67,7 +68,7 @@ class Bishop
     end
   end
 
-  def move_down_left(board, moves = @moves, position = @position)
+  def move_down_left
     queue = [position]
 
     while queue
@@ -88,6 +89,6 @@ class Bishop
   def update_position(coordinates)
     @position = coordinates
     @moves = []
-    valid_moves(board)
+    valid_moves
   end
 end

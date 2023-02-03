@@ -113,5 +113,4 @@ describe Rook do
                                          [6, 7], [7, 7]])
     end
   end
-
 end

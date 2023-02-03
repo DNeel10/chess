@@ -19,7 +19,7 @@ describe Pieces do
 
     context 'player is black pieces' do
       subject(:pieces_white) { described_class.new }
-      
+
       it 'creates an array of all pieces' do
         pieces = pieces_white.generate_pieces('Black')
         expect(pieces.length).to eq(16)
