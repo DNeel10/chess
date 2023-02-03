@@ -1,15 +1,16 @@
 require_relative 'board'
 
 class Rook
-  attr_reader :move_pattern, :color, :name
+  attr_reader :move_pattern, :color, :name, :board
   attr_accessor :position, :moves
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
     @position = position
     @color = color
+    @board = board
     @name = 'Rook'
-    # @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0]]
     @moves = []
     valid_moves
   end
