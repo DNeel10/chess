@@ -1,6 +1,8 @@
+require_relative 'checkfinder'
+
 class King
   attr_reader :move_pattern, :color, :name
-  attr_accessor :position, :moves, :board
+  attr_accessor :position, :moves, :board, :check_finder
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
@@ -11,20 +13,21 @@ class King
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
+    @check_finder = Checkfinder.new(board)
     @check = false
     valid_moves
   end
 
   def to_s
-    "#{@name}, #{@position}"
+    "#{@name}, #{@position}, #{@check}"
   end
 
   def valid_moves
     @moves = []
-    
+
     potential_moves.each do |move|
       if board.open_space?(move)
-        moves << move
+        moves << move unless check_finder.would_be_in_check?(@board, self, move) == true
       else
         moves << move unless board.players_piece?(move, color)
       end
@@ -47,4 +50,7 @@ class King
     valid_moves
   end
 
+  def currently_in_check?
+    check_finder.in_check?(board, self, position)
+  end
 end

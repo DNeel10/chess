@@ -34,7 +34,7 @@ class Rook
     moves.include?(coordinates)
   end
 
-  def move_right(board, moves = @moves, position = @position)
+  def move_right
     queue = [position]
 
     while queue
@@ -48,7 +48,7 @@ class Rook
     end
   end
 
-  def move_left(board, moves = @moves, position = @position)
+  def move_left
     queue = [position]
 
     while queue
@@ -62,7 +62,7 @@ class Rook
     end
   end
 
-  def move_up(board, moves = @moves, position = @position)
+  def move_up
     queue = [position]
 
     while queue
@@ -76,7 +76,7 @@ class Rook
     end
   end
 
-  def move_down(board, moves = @moves, position = @position)
+  def move_down
     queue = [position]
 
     while queue

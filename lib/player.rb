@@ -9,11 +9,12 @@ class Player
 
   def initialize(color, pieces, board)
     @color = color
+    @board = board
     @active_pieces = pieces.generate_pieces(color, board)
     @selected_piece = nil
     @king = select_king
     @king_in_check = false
-    @board = board
+
     set_up_board(board)
   end
 
@@ -37,7 +38,7 @@ class Player
   def pick_initial_piece(board)
     loop do
       coordinates = select_cell
-      
+
       return select_piece_from_board(coordinates, board) if select_piece_from_board(coordinates, board)
 
       puts 'That is not a valid piece. Please select a valid piece'

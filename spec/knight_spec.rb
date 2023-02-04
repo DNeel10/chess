@@ -33,14 +33,14 @@ describe Knight do
       it 'removes moves where a players own piece is currently occupying' do
         knight_restricted.instance_variable_set(:@moves, [])
         board.grid[1][3] = Pawn.new([1, 3], 'Black', board)
-        valid_list = knight_restricted.valid_moves(board)
+        valid_list = knight_restricted.valid_moves
         expect(valid_list).to eq([[2, 2], [2, 0]])
       end
 
       it 'does not remove a move where an enemy players piece is currently occupying' do
         knight_restricted.instance_variable_set(:@moves, [])
         board.grid[1][3] = Pawn.new([1, 3], 'White', board)
-        valid_list = knight_restricted.valid_moves(board)
+        valid_list = knight_restricted.valid_moves
         expect(valid_list).to eq([[1, 3], [2, 2], [2, 0]])
       end
     end
@@ -64,7 +64,7 @@ describe Knight do
       let(:board_legal) { Board.new }
 
       before do
-        allow(knight_legal).to receive(:valid_moves).with(board_legal).and_return([[1, 3], [2, 2], [2, 0]])
+        allow(knight_legal).to receive(:valid_moves).and_return([[1, 3], [2, 2], [2, 0]])
       end
 
       it 'returns false' do

@@ -1,5 +1,5 @@
 # implement checkfinder class
-## how does check look for
+## what does check look for
 ### Checkfinder will need to know where the white and black kings are (each player, or each player's king, gets their own instance of check finder)
 #### will need to know for all of a player's king, if any of the opponents pieces moves include the king position
 #### if any does, return true

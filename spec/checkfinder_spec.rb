@@ -46,5 +46,16 @@ describe Checkfinder do
       expect(check_finder.in_check?(board, white_king)).to be false
     end
   end
+
+  describe '#would_be_in_check' do
+    it 'returns true if the potential move would put the king in check' do
+      white_king = King.new([0, 4], 'White', board)
+      board.grid[0][4] = white_king
+      potential_move = [0, 3]
+      black_knight = Knight.new([1, 5], 'Black', board)
+      board.grid[1][2] = black_knight
+      expect(check_finder.would_be_in_check?(board, white_king, potential_move)).to be true
+    end
+  end
 end
 

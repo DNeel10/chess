@@ -15,8 +15,8 @@ describe Queen do
 
     it 'returns an array of moves in each direction' do
       queen_move.instance_variable_set(:@moves, [])
-      move_array = queen_move.instance_variable_get(:@moves)
       queen_move.valid_moves
+      move_array = queen_move.instance_variable_get(:@moves)
       expect(move_array).to match_array([[4, 3], [5, 3], [6, 3], [7, 3], # move_up
                                          [2, 3], [1, 3], [0, 3],         # move_down
                                          [3, 4], [3, 5], [3, 6], [3, 7], # move_right

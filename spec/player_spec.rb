@@ -11,10 +11,10 @@ describe Player do
 
       before do
         player_color = player_initial.instance_variable_get(:@color)
-        initial_piece = [0,1]
-        rook = board_valid.grid[0][1]
+        initial_piece = [0, 1]
+        player_piece = board_valid.grid[0][1]
         allow(player_initial).to receive(:select_cell).and_return(initial_piece)
-        allow(board_valid).to receive(:select_player_piece).with(initial_piece, player_color).and_return(rook)
+        allow(board_valid).to receive(:select_player_piece).with(initial_piece, player_color).and_return(player_piece)
       end
 
       it "completes the loop and does not display the error message" do
@@ -34,7 +34,7 @@ describe Player do
         next_piece = [0, 1]
         player_color = player_initial.instance_variable_get(:@color)
         allow(player_initial).to receive(:select_cell).and_return(initial_piece, next_piece)
-        knight = Knight.new([0, 1],'White',  board_invalid)
+        knight = Knight.new([0, 1], 'White', board_invalid)
         allow(board_invalid).to receive(:select_player_piece).with(initial_piece, player_color).and_return(nil)
         allow(board_invalid).to receive(:select_player_piece).with(next_piece, player_color).and_return(knight)
       end
@@ -122,7 +122,7 @@ describe Player do
     it "changes the user input to appropriate coordinates" do
       input = 'A4'
       converted_input = player_convert.convert_entry(input)
-      expect(converted_input).to eq([0, 3])
+      expect(converted_input).to eq([3, 0])
     end
   end
 
