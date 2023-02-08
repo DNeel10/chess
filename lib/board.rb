@@ -1,6 +1,4 @@
 
-# require_relative 'knight'
-
 class Board
   attr_accessor :grid
 
@@ -24,6 +22,7 @@ class Board
 
   def update_piece(coordinates, piece)
     @grid[coordinates[0]][coordinates[1]] = piece
+    piece.valid_moves
   end
 
   def open_space?(coordinates)

@@ -19,20 +19,22 @@ class Player
   end
 
   def player_turn(board)
+    board.display
+    
     # select a piece to move
     puts 'Select a piece on the board'
-    board.display
 
     @selected_piece = pick_initial_piece(board)
-    puts "#{@selected_piece.moves}"
-
+    
     # display options of where the piece can go
     # selected_piece.display_valid_moves
+    puts "#{selected_piece.name}'s current move options: #{@selected_piece.moves}"
 
     # move the selected piece
     puts 'Select where to move your piece'
 
     move_piece(board)
+    puts "#{selected_piece.name}'s new move options: #{@selected_piece.moves}"
   end
 
   def pick_initial_piece(board)

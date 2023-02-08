@@ -19,7 +19,7 @@ class King
   end
 
   def to_s
-    "#{@name}, #{@position}, #{@check}"
+    "#{@name}, #{@position}, #{@color}"
   end
 
   def valid_moves
@@ -27,7 +27,7 @@ class King
 
     potential_moves.each do |move|
       if board.open_space?(move)
-        moves << move unless check_finder.would_be_in_check?(@board, self, move) == true
+        moves << move unless check_finder.would_be_in_check?(self, move) == true
       else
         moves << move unless board.players_piece?(move, color)
       end
@@ -40,8 +40,8 @@ class King
                 .select { |move| move.all? { |n| n >= 0 && n <= 7 } }
   end
 
-  def legal_move?(board, coordinates)
-    valid_moves(board).include?(coordinates)
+  def legal_move?(coordinates, moves = @moves)
+    moves.include?(coordinates)
   end
 
   def update_position(coordinates)
@@ -51,6 +51,6 @@ class King
   end
 
   def currently_in_check?
-    check_finder.in_check?(board, self, position)
+    @check = true if check_finder.in_check?(self)
   end
 end

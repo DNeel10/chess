@@ -5,27 +5,27 @@ class Checkfinder
     @board = board
   end
 
-  def in_check?(board = @board, king)
+  def in_check?(king, board = @board)
     board.grid.each do |row|
       row.each do |piece|
         next if piece.nil? || piece == king || piece.color == king.color
 
         return true if piece.moves.include?(king.position)
-
-        return false
       end
     end
+    false
   end
 
-  def would_be_in_check?(board = @board, king, position)
+  def would_be_in_check?(king, move, board = @board)
     board.grid.each do |row|
       row.each do |piece|
         next if piece.nil? || piece == king || piece.color == king.color
+        # puts "#{piece.name}'s moves: #{piece.moves}" if piece.moves.include?(move)
+        return true if piece.moves.include?(move)
 
-        return true if piece.moves.include?(position)
-
-        return false
       end
+
     end
+    false
   end
 end

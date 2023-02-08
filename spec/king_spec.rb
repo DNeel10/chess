@@ -5,7 +5,7 @@ require './lib/knight'
 describe King do
 
   describe '#valid_moves' do
-    context 'a players potential moves may be limited by his own pieces' do
+    context 'a players potential moves may be limited' do
       let(:board) { Board.new }
       subject(:king_restricted) { described_class.new([0, 3], 'White', board) }
 

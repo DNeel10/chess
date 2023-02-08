@@ -25,13 +25,14 @@ class Pawn
 
   def valid_moves
     @moves = []
+
     case first_move
     when true
       initial_move
     else
       move_one_space
     end
-    # attack_moves(board)
+    attack_moves
   end
 
   def move_one_space
@@ -47,16 +48,41 @@ class Pawn
   def initial_move
     case color
     when 'White'
-      white_move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
-                        .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.open_space?(move) }
+      white_initial_moves
     else
-      black_move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
-                        .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.open_space?(move) }
+      black_initial_moves
     end
   end
 
-  def attack_moves(board, position = @position, color = @color, moves = @moves)
+  def attack_moves
+    case color
+    when 'White'
+      white_attack_moves
+    else
+      black_attack_moves
+    end
+  end
+
+  def white_initial_moves
+    white_move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
+                      .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.open_space?(move) }
+  end
+
+  def black_initial_moves
+    black_move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
+                      .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.open_space?(move) }
+  end
+
+  def white_attack_moves
     # TODO : build moves to attack opponent pieces if diagonal
+    white_attacking_moves.map { |x, y| [position[0] + x, position[1] + y] }
+                         .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color) }
+  end
+
+  def black_attack_moves
+    # TODO : build moves to attack opponent pieces if diagonal
+    black_attacking_moves.map { |x, y| [position[0] + x, position[1] + y] }
+                         .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color) }
   end
 
   def legal_move?(coordinates, moves = @moves)

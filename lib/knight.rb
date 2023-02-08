@@ -15,7 +15,7 @@ class Knight
   end
 
   def to_s
-    "#{@name}, #{@position}"
+    "#{@name}, #{@position}, #{@color}"
   end
 
   def valid_moves
@@ -42,7 +42,6 @@ class Knight
 
   def update_position(coordinates)
     @position = coordinates
-    @moves = []
     valid_moves
   end
 
