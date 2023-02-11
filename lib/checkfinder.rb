@@ -20,11 +20,9 @@ class Checkfinder
     board.grid.each do |row|
       row.each do |piece|
         next if piece.nil? || piece == king || piece.color == king.color
-        # puts "#{piece.name}'s moves: #{piece.moves}" if piece.moves.include?(move)
+
         return true if piece.moves.include?(move)
-
       end
-
     end
     false
   end

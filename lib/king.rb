@@ -2,7 +2,7 @@ require_relative 'checkfinder'
 
 class King
   attr_reader :move_pattern, :color, :name
-  attr_accessor :position, :moves, :board, :check_finder
+  attr_accessor :position, :moves, :board, :check_finder, :check
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
@@ -10,16 +10,20 @@ class King
     @color = color
     @board = board
     @name = 'King'
+    @symbol = to_fen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
     @check_finder = Checkfinder.new(board)
     @check = false
-    valid_moves
   end
 
   def to_s
-    "#{@name}, #{@position}, #{@color}"
+    "#{@symbol}"
+  end
+
+  def to_fen
+    color == 'White' ? 'K' : 'k'
   end
 
   def valid_moves

@@ -8,22 +8,27 @@ class Bishop
     @color = color
     @board = board
     @name = 'Bishop'
+    @symbol = to_fen
     @move_pattern = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
-    valid_moves
   end
 
   def to_s
-    "#{@name}, #{@position}"
+    "#{@symbol}"
   end
 
-  def valid_moves
+  def to_fen
+    color == 'White' ? 'B' : 'b'
+  end
+
+  def valid_moves(moves = @moves)
     @moves = []
-    
+
     move_up_right
     move_up_left
     move_down_right
     move_down_left
+    moves
   end
 
   # bishop can move on a diagonal line any number of spaces (stopped by capturing a piece
@@ -33,12 +38,17 @@ class Bishop
 
     while queue
       current = queue.shift
-
-      return if current[1] >= 7 || current[0] >= 7 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] + 1, current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] > 7 || current[0] > 7 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+    
+      return if board.opponent_piece?(current, color)
+
     end
   end
 
@@ -47,12 +57,16 @@ class Bishop
 
     while queue
       current = queue.shift
-
-      return if current[1] <= 0 || current[0] >= 7 ||board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] + 1, current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1].negative? || current[0] > 7 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+   
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -61,12 +75,16 @@ class Bishop
 
     while queue
       current = queue.shift
-
-      return if current[1] >= 7 || current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] - 1, current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] > 7 || current[0].negative? || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -75,12 +93,16 @@ class Bishop
 
     while queue
       current = queue.shift
-
-      return if current[1] <= 0 || current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] - 1, current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1].negative? || current[0].negative? || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+
+      return if board.opponent_piece?(current, color)
     end
   end
 

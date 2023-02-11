@@ -8,19 +8,23 @@ class Queen
     @color = color
     @board = board
     @name = 'Queen'
+    @symbol = to_fen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
-    valid_moves
   end
 
   def to_s
-    "#{@name}, #{@position}"
+    "#{@symbol}"
+  end
+
+  def to_fen
+    color == 'White' ? 'Q' : 'q'
   end
 
   def valid_moves
     @moves = []
-    
+
     move_right
     move_left
     move_up
@@ -40,12 +44,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[1] >= 7 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0], current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] > 7 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || current != position
+
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -54,12 +62,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[1] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0], current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] < 0 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -68,12 +80,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[0] >= 7 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] + 1, current[1]]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[0] > 7 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -82,12 +98,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[1] >= 7 || current[0] >= 7 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] + 1, current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] > 7 || current[0] > 7 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(new_move, color)
+
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -96,12 +116,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[1] <= 0 || current[0] >= 7 ||board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] + 1, current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] < 0 || current[0] > 7 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+    
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -110,12 +134,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[1] >= 7 || current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] - 1, current[1] + 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1] > 7 || current[0] < 0 || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+    
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -124,12 +152,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[1] <= 0 || current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] - 1, current[1] - 1]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[1].negative? || current[0].negative? || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+    
+      return if board.opponent_piece?(current, color)
     end
   end
 
@@ -138,12 +170,16 @@ class Queen
 
     while queue
       current = queue.shift
-
-      return if current[0] <= 0 || board.players_piece?(current, color) || board.opponent_piece?(current, color)
-
       new_move = [current[0] - 1, current[1]]
       queue << new_move
-      moves << new_move if board.open_space?(new_move) || board.opponent_piece?(new_move, color)
+
+      next if current == position
+
+      break if current[0].negative? || board.players_piece?(current, color)
+
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || current != position
+    
+      return if board.opponent_piece?(current, color)
     end
   end
 

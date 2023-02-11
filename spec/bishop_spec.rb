@@ -16,7 +16,7 @@ describe Bishop do
       bishop_move.instance_variable_set(:@moves, [])
       bishop_move.valid_moves
       move_array = bishop_move.instance_variable_get(:@moves)
-      expect(move_array).to match_array([[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [6, 6], 
+      expect(move_array).to match_array([[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [6, 6],
                                          [7, 7], [6, 4], [7, 3], [4, 6], [3, 7]])
     end
   end
@@ -35,7 +35,7 @@ describe Bishop do
       move_up_right_array = bishop_up_right.instance_variable_get(:@moves)
       bishop_up_right.move_up_right
       expect(move_up_right_array).to eq([[1, 1], [2, 2], [3, 3], [4, 4],
-                                      [5, 5], [6, 6], [7, 7]])
+                                         [5, 5], [6, 6], [7, 7]])
     end
   end
 
@@ -52,7 +52,7 @@ describe Bishop do
       bishop_down_right.instance_variable_set(:@moves, [])
       move_down_right_array = bishop_down_right.instance_variable_get(:@moves)
       bishop_down_right.move_down_right
-      expect(move_down_right_array).to eq([[6,1], [5, 2], [4, 3], [3, 4], [2, 5], [1, 6], [0, 7]])
+      expect(move_down_right_array).to eq([[6, 1], [5, 2], [4, 3], [3, 4], [2, 5], [1, 6], [0, 7]])
     end
   end
 
@@ -90,7 +90,7 @@ describe Bishop do
     end
   end
 
-  context "a piece has other player pieces in its path" do
+  context 'a piece has other player pieces in its path' do
     let(:board_grid) { Board.new }
     subject(:bishop_impeded) { described_class.new([3, 3], 'White', board_grid) }
 
@@ -102,6 +102,4 @@ describe Bishop do
       expect(down_left_array).to eq([])
     end
   end
-
-
 end

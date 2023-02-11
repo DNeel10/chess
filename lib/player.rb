@@ -5,36 +5,35 @@ require_relative 'pieces'
 
 class Player
   attr_reader :color
-  attr_accessor :selected_piece, :active_pieces, :pieces, :board, :king
+  attr_accessor :selected_piece, :player_pieces, :pieces, :board, :king
 
   def initialize(color, pieces, board)
     @color = color
     @board = board
-    @active_pieces = pieces.generate_pieces(color, board)
+    @player_pieces = pieces.generate_pieces(color, board)
     @selected_piece = nil
     @king = select_king
-    @king_in_check = false
+    @king_in_check = king.check
 
-    set_up_board(board)
+    build_board(board)
   end
 
+  # TODO: Rework puts/display methods.  Included here for testing purposes
   def player_turn(board)
     board.display
-    
+
     # select a piece to move
     puts 'Select a piece on the board'
 
     @selected_piece = pick_initial_piece(board)
-    
+
     # display options of where the piece can go
-    # selected_piece.display_valid_moves
-    puts "#{selected_piece.name}'s current move options: #{@selected_piece.moves}"
+    puts "#{selected_piece.name}'s current move options: #{convert_entry(selected_piece.moves)}"
 
     # move the selected piece
     puts 'Select where to move your piece'
 
     move_piece(board)
-    puts "#{selected_piece.name}'s new move options: #{@selected_piece.moves}"
   end
 
   def pick_initial_piece(board)
@@ -64,8 +63,27 @@ class Player
 
   # returns an array with coordinates
   def convert_entry(input)
+    case input
+    when String
+      convert_to_coord(input)
+    else
+      convert_to_rank_file(input)
+    end
+  end
+
+  def convert_to_coord(input)
     split_array = input.split('').map(&:ord)
     [split_array[1] - 49, split_array[0] - 65]
+  end
+
+  def convert_to_rank_file(input)
+    converted_moves = []
+
+    input.each do |coordinate|
+      rank_file = [coordinate[1] + 65, coordinate[0] + 49]
+      converted_moves << rank_file.map(&:chr).join
+    end
+    converted_moves
   end
 
   def select_piece_from_board(coordinates, board, color = @color)
@@ -110,12 +128,12 @@ class Player
   end
 
   def select_king
-    active_pieces.find { |piece| piece.name == 'King' }
+    player_pieces.find { |piece| piece.name == 'King' }
   end
   
-  # this should get moved to game class
-  def set_up_board(board)
-    @active_pieces.each do |piece|
+  # Does this fit in this class?
+  def build_board(board)
+    @player_pieces.each do |piece|
       @king = piece if piece.name == 'King'
 
       board.update_piece(piece.position, piece)

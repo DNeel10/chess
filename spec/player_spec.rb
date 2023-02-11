@@ -8,7 +8,6 @@ describe Player do
       let(:board_valid) { Board.new }
       subject(:player_initial) { described_class.new('White', Pieces.new(board_valid), board_valid) }
 
-
       before do
         player_color = player_initial.instance_variable_get(:@color)
         initial_piece = [0, 1]

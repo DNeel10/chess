@@ -5,7 +5,7 @@ require './lib/rook'
 describe Pawn do
   context 'the player is using white pieces' do
     let(:board) { Board.new }
-    subject(:pawn_moves) { described_class.new([1, 0], 'White', board)}
+    subject(:pawn_moves) { described_class.new([1, 0], 'White', board) }
 
     describe '#valid_moves' do
       it 'updates the move array with two moves if its the first move' do

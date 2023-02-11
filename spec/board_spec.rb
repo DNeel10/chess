@@ -37,6 +37,18 @@ describe Board do
     end
   end
 
+  describe '#move_piece' do 
+    subject(:board_update) { described_class.new }
+    
+    it 'changes a cell to nil when a piece moves from it' do
+      knight = Knight.new([0, 1], 'Black', board_update)
+      coordinate = knight.position
+      board_grid = board_update.instance_variable_get(:@grid)
+      board_grid[0][1] = knight
+      board_update.move_piece(coordinate)
+      expect(board_grid[0][1]).to be_nil
+    end
+  end
 end
 
 

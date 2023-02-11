@@ -11,11 +11,10 @@ class Pieces
   # each player needs:
   # 1 King, 1 Queen, 2 Rooks, 2 Knights, 2 Bishops, 8 Pawns
   attr_accessor :board
-  
+
   def initialize(board)
     @board = board
   end
-
 
   def generate_pieces(player_color, board)
     pieces = []
@@ -48,5 +47,4 @@ class Pieces
     end
     pieces
   end
-
 end

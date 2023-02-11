@@ -6,7 +6,7 @@ describe Knight do
   describe '#potential_moves' do
     context 'an unmoved knight is selected by the player' do
       let(:board) { Board.new }
-      subject(:knight_moves) { described_class.new([0,1], 'Black', board) }
+      subject(:knight_moves) { described_class.new([0, 1], 'Black', board) }
 
       it 'returns an array of all move options' do
         move_array = knight_moves.potential_moves
@@ -46,8 +46,8 @@ describe Knight do
     end
   end
 
-  describe "#legal_moves?" do
-    context "a player selects coordinates included in the valid moves array" do
+  describe '#legal_moves?' do
+    context 'a player selects coordinates included in the valid moves array' do
       let(:board_legal) { Board.new }
       subject(:knight_legal) { described_class.new([0, 1], 'White', board_legal) }
 
@@ -59,7 +59,7 @@ describe Knight do
       end
     end
 
-    context "a player selects coordinates not included in the valid moves array" do
+    context 'a player selects coordinates not included in the valid moves array' do
       subject(:knight_legal) { described_class.new([0, 1], 'White', board_legal) }
       let(:board_legal) { Board.new }
 

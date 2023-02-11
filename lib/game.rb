@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'board'
 require_relative 'player'
 require_relative 'pieces'
@@ -6,6 +7,7 @@ require_relative 'pieces'
 # controls the flow of the game
 class Game
   attr_accessor :player1, :player2, :board
+
   def initialize(player1, player2, board)
     @player1 = player1
     @player2 = player2

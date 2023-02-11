@@ -34,6 +34,4 @@ describe Pieces do
       end
     end
   end
-
-  # test that initialize sends the message #generate_pieces to pieces
 end

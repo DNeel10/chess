@@ -10,6 +10,7 @@ class Pawn
     @board = board
     @color = color
     @name = 'Pawn'
+    @symbol = to_fen
     @first_move = true
     @white_move_pattern = [[1, 0], [2, 0]]
     @black_move_pattern = [[-1, 0], [-2, 0]]
@@ -20,7 +21,11 @@ class Pawn
   end
 
   def to_s
-    "#{@name}, #{@position}, #{first_move}"
+    "#{@symbol}"
+  end
+
+  def to_fen
+    color == 'White' ? 'P' : 'p'
   end
 
   def valid_moves
