@@ -6,7 +6,7 @@ class Board
   using ColorableString
 
   def initialize
-    @grid = Array.new(8) { Array.new(8, nil) }
+    @grid = Array.new(8) { Array.new(8) }
   end
 
   def players_piece?(coordinates, player_color)
@@ -32,13 +32,7 @@ class Board
   end
 
   def update_all_pieces
-    grid.each do |row|
-      row.each do |piece|
-        next if piece.nil?
-
-        piece.valid_moves
-      end
-    end
+    grid.flatten.compact.each { |piece| piece.valid_moves }
   end
 
   def open_space?(coordinates)

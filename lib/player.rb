@@ -2,11 +2,14 @@
 
 require_relative 'board'
 require_relative 'pieces'
+require_relative 'display'
 
 class Player
   attr_reader :color
   attr_accessor :selected_piece, :player_pieces, :pieces, :board, :king
 
+  include Display
+  
   def initialize(color, pieces, board)
     @color = color
     @board = board
@@ -19,9 +22,8 @@ class Player
   end
 
   # TODO: Rework puts/display methods.  Included here for testing purposes
-  def player_turn(board)
-    # board.display
-    board.display
+  def player_turn(board = @board)
+    display_board
 
     # select a piece to move
     puts 'Select a piece on the board'

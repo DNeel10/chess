@@ -9,7 +9,7 @@
   "ruby.lint": {
     "rubocop": true,
   },
-  "window.zoomLevel": -1,
+  "window.zoomLevel": 0,
   "terminal.integrated.fontSize" : 25,
   "terminal.integrated.fontWeightBold" : true,
 }
