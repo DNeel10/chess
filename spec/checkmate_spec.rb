@@ -1,0 +1,4 @@
+describe Checkmate do
+
+  
+end

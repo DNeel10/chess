@@ -8,8 +8,7 @@ class Player
   attr_reader :color
   attr_accessor :selected_piece, :player_pieces, :pieces, :board, :king
 
-  include Display
-  
+include Display
   def initialize(color, pieces, board)
     @color = color
     @board = board
@@ -22,8 +21,9 @@ class Player
   end
 
   # TODO: Rework puts/display methods.  Included here for testing purposes
-  def player_turn(board = @board)
+  def player_turn(board)
     display_board
+    update_all_moves
 
     # select a piece to move
     puts 'Select a piece on the board'
@@ -105,6 +105,10 @@ class Player
 
       puts 'Ineligible move. Please choose a valid move'
     end
+  end
+
+  def update_all_moves(board = @board)
+    board.update_all_pieces
   end
 
   def update_piece_on_board(coordinates, board, piece = @selected_piece)
