@@ -1,7 +1,7 @@
 require_relative 'checkfinder'
 
 class King
-  attr_reader :move_pattern, :color, :name
+  attr_reader :move_pattern, :color, :name, :symbol
   attr_accessor :position, :moves, :board, :check_finder, :check
 
   # what needs to be set up when a piece is created in the game
@@ -15,7 +15,7 @@ class King
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
     @check_finder = Checkfinder.new(board)
-    @check = false
+    @check = currently_in_check?
   end
 
   def to_s
@@ -23,7 +23,7 @@ class King
   end
 
   def to_fen
-    color == 'White' ? 'K' : 'k'
+    color == 'White' ? '♔' : '♚'
   end
 
   def valid_moves
@@ -55,6 +55,6 @@ class King
   end
 
   def currently_in_check?
-    @check = true if check_finder.in_check?(self)
+    check_finder.in_check?(self)
   end
 end

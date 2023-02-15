@@ -1,5 +1,5 @@
 class Queen
-  attr_reader :move_pattern, :color, :name
+  attr_reader :move_pattern, :color, :name, :symbol
   attr_accessor :position, :moves, :board
 
   # what needs to be set up when a piece is created in the game
@@ -19,7 +19,7 @@ class Queen
   end
 
   def to_fen
-    color == 'White' ? 'Q' : 'q'
+    color == 'White' ? '♕' : '♛'
   end
 
   def valid_moves

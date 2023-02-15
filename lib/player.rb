@@ -20,6 +20,7 @@ class Player
 
   # TODO: Rework puts/display methods.  Included here for testing purposes
   def player_turn(board)
+    # board.display
     board.display
 
     # select a piece to move
@@ -34,6 +35,7 @@ class Player
     puts 'Select where to move your piece'
 
     move_piece(board)
+    board.update_all_pieces
   end
 
   def pick_initial_piece(board)
@@ -133,9 +135,7 @@ class Player
   
   # Does this fit in this class?
   def build_board(board)
-    @player_pieces.each do |piece|
-      @king = piece if piece.name == 'King'
-
+    player_pieces.each do |piece|
       board.update_piece(piece.position, piece)
     end
   end

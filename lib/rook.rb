@@ -20,7 +20,7 @@ class Rook
   end
 
   def to_fen
-    color == 'White' ? 'R' : 'r'
+    color == 'White' ? '♖' : '♜'
   end
 
   # rook can use move pattern in one (up, down, left, right) direction up to where another piece is
@@ -52,7 +52,7 @@ class Rook
       break if current[1] > 7 || board.players_piece?(current, color)
 
       moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || current != position
-    
+
       return if board.opponent_piece?(current, color)
     end
   end
@@ -67,10 +67,10 @@ class Rook
 
       next if current == position
 
-      break if current[1] < 0 || board.players_piece?(current, color)
+      break if current[1].negative? || board.players_piece?(current, color)
 
       moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
-    
+
       return if board.opponent_piece?(current, color)
     end
   end
@@ -103,10 +103,10 @@ class Rook
 
       next if current == position
 
-      break if current[0] < 0 || board.players_piece?(current, color)
+      break if current[0].negative? || board.players_piece?(current, color)
 
       moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || current != position
-    
+
       return if board.opponent_piece?(current, color)
     end
   end

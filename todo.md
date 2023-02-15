@@ -1,21 +1,18 @@
-# implement checkfinder class
-## will king need a method of "in_check" or will the player need it?
-### player cannot make a move when in check unless the move removes check (either blocking with another piece, or moving king)
-#### when does check finder look for check to know if a piece blocks check or not?
-
 # Checkmate
-## need to build win conditions:
-### a king is in check, and a player has no valid moves to remove check
+## conditions for checkmate:
+### while a king is in check
+#### a king has no valid moves to get out of check (this will be accomplished through the #would_be_in_check / #valid_moves method in the king class)
+#### a player has no moves that block check
+##### how will it know this part? Can something look at all pieces to update valid moves?
 
-# King Moves
-## anything else need to be done here? 
 
-# updating valid_moves
-## pieces will need to have their valid moves updated each time a player moves a piece to account for pieces blocking potential moves
-### this could also tie into check/check mate
+# board display
+## currently board only shows the value of a cell
+## need to implement a "cell" class that holds:
+### the coordinates that the cell is in
+### the piece that is on those coordinates
+### the background color of the cell
 
-# how do i manage the "active_pieces" array in each player class?
-## this could allow for easier move updates
 
 # Game flow
 ## white player moves first, then black

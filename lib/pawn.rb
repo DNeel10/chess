@@ -3,7 +3,7 @@ require_relative 'board'
 class Pawn
   attr_accessor :moves, :position, :first_move
   attr_reader :color, :attacking_moves, :name, :white_move_pattern, :board,
-              :black_move_pattern, :black_attacking_moves, :white_attacking_moves
+              :black_move_pattern, :black_attacking_moves, :white_attacking_moves, :symbol
 
   def initialize(position, color, board)
     @position = position
@@ -25,7 +25,7 @@ class Pawn
   end
 
   def to_fen
-    color == 'White' ? 'P' : 'p'
+    color == 'White' ? '♙' : '♟︎'
   end
 
   def valid_moves

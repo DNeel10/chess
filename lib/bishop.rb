@@ -1,5 +1,5 @@
 class Bishop
-  attr_reader :move_pattern, :color
+  attr_reader :move_pattern, :color, :symbol
   attr_accessor :position, :moves, :name, :board
 
   # what needs to be set up when a piece is created in the game
@@ -18,7 +18,7 @@ class Bishop
   end
 
   def to_fen
-    color == 'White' ? 'B' : 'b'
+    color == 'White' ? '♗' : '♝'
   end
 
   def valid_moves(moves = @moves)
