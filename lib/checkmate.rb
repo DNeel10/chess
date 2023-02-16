@@ -20,14 +20,4 @@ class Checkmate
     # opponent piece coordinates Ox, Oy
     # king position Coordinates Kx, Ky
     # All player pieces check for moves that are between (Oy, Py) and (Ox, Px)
-  
-  end
-
-  def opponent_piece(king)
-    board.grid.flatten.compact.each do |piece|
-      next if piece.color == king.color
-
-      piece
-    end
-  end
 end
