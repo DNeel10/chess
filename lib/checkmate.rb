@@ -5,18 +5,12 @@ class Checkmate
   end
   
   def checkmate?
-    if king.moves.empty?
-      return true if blocking_moves.empty?
-
-    end
-    false
+    king.moves.empty? && blocking_moves.empty?
   end
 
   def blocking_moves(king)
-    move_list = []
 
-    move_list
-  
+
     # opponent piece coordinates Ox, Oy
     # king position Coordinates Kx, Ky
     # All player pieces check for moves that are between (Oy, Py) and (Ox, Px)

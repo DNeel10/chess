@@ -3,7 +3,7 @@ require_relative 'colorable_string'
 class Board
   attr_accessor :grid
 
-  using ColorableString
+  # using ColorableString
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
@@ -32,7 +32,7 @@ class Board
   end
 
   def update_all_pieces
-    grid.flatten.compact.each { |piece| piece.valid_moves }
+    grid.flatten.compact.each(&:valid_moves)
   end
 
   def open_space?(coordinates)
