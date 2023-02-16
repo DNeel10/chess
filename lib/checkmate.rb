@@ -3,7 +3,11 @@ class Checkmate
   def initialize
   end
   
-  # at the beginning of a players turn:
-  # if the king is in check:
-  # 
+  def checkmate?
+  end
+
+  def blocking_moves
+    # opponent piece coordinates Ox, Oy
+    # king position Coordinates Kx, Ky
+    # All player pieces check for moves that are between (Oy, Py) and (Ox, Px)
 end

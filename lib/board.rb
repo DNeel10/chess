@@ -22,7 +22,7 @@ class Board
   def select_player_piece(coordinates, player_color)
     rank, file = coordinates
     player_piece = grid[rank][file] if players_piece?(coordinates, player_color)
-    player_piece if player_piece&.moves != []
+    player_piece if player_piece&.valid_moves != []
   end
 
   def update_piece(coordinates, piece)
