@@ -42,7 +42,6 @@ describe Checkfinder do
       board.update_piece([0, 2], white_knight)
       black_queen = Queen.new([0, 1], 'Black', board)
       board.update_piece([0, 1], black_queen)
-      puts "#{black_queen.moves}"
       expect(check_finder.in_check?(white_king)).to be false
     end
   end
