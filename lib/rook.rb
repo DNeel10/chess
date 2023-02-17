@@ -1,8 +1,11 @@
 require_relative 'board'
+require_relative 'movement'
 
 class Rook
   attr_reader :move_pattern, :color, :name, :board, :symbol
   attr_accessor :position, :moves
+
+  include Movement
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
@@ -37,78 +40,6 @@ class Rook
 
   def legal_move?(coordinates, moves = @moves)
     moves.include?(coordinates)
-  end
-
-  def move_right
-    queue = [position]
-
-    while queue
-      current = queue.shift
-      new_move = [current[0], current[1] + 1]
-      queue << new_move
-
-      next if current == position
-
-      break if current[1] > 7 || board.players_piece?(current, color)
-
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || current != position
-
-      return if board.opponent_piece?(current, color)
-    end
-  end
-
-  def move_left
-    queue = [position]
-
-    while queue
-      current = queue.shift
-      new_move = [current[0], current[1] - 1]
-      queue << new_move
-
-      next if current == position
-
-      break if current[1].negative? || board.players_piece?(current, color)
-
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
-
-      return if board.opponent_piece?(current, color)
-    end
-  end
-
-  def move_up
-    queue = [position]
-
-    while queue
-      current = queue.shift
-      new_move = [current[0] + 1, current[1]]
-      queue << new_move
-
-      next if current == position
-
-      break if current[0] > 7 || board.players_piece?(current, color)
-
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
-    
-      return if board.opponent_piece?(current, color)
-    end
-  end
-
-  def move_down
-    queue = [position]
-
-    while queue
-      current = queue.shift
-      new_move = [current[0] - 1, current[1]]
-      queue << new_move
-
-      next if current == position
-
-      break if current[0].negative? || board.players_piece?(current, color)
-
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || current != position
-
-      return if board.opponent_piece?(current, color)
-    end
   end
 
   def update_position(coordinates)

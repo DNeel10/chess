@@ -29,6 +29,7 @@ class Board
     rank, file = coordinates
     grid[rank][file] = piece
     piece.position = coordinates
+    piece.valid_moves
   end
 
   def update_all_pieces

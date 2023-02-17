@@ -21,7 +21,7 @@ describe King do
         board.grid[1][3] = Pawn.new([1, 3], 'Black', board)
         king_restricted.valid_moves
         valid_list = king_restricted.instance_variable_get(:@moves)
-        expect(valid_list).to match_array([[1, 3], [1, 2], [1, 4]])
+        expect(valid_list).to match_array([[0, 2], [0, 4],[1, 3], [1, 2], [1, 4]])
       end
 
       it 'removes a move where the king would be in check' do

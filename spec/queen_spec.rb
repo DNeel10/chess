@@ -1,6 +1,8 @@
 require './lib/queen'
 require './lib/board'
 require './lib/knight'
+require './lib/king'
+require './lib/rook'
 
 describe Queen do
   describe '#valid_moves' do
@@ -178,6 +180,26 @@ describe Queen do
       board_grid.grid[2][2] = Knight.new([2, 2], 'White', board_grid)
       queen_impeded.move_down_left
       expect(down_left_array).to eq([])
+    end
+  end
+
+  context "a move would expose the king" do
+    let(:board_grid) { Board.new }
+    subject(:queen_expose) { described_class.new([0, 4], 'White', board_grid) }
+    
+    before do
+      board_grid.update_piece([0, 4], queen_expose)
+    end
+
+    it "doesn't add moves that would expose the king" do
+      queen_expose.instance_variable_set(:@moves, [])
+      white_king = King.new([0, 5], 'White', board_grid)
+      black_rook = Rook.new([0, 0], 'Black', board_grid)
+      board_grid.update_piece([0, 5], white_king)
+      board_grid.update_piece([0, 0], black_rook)
+      queen_expose.move_up
+      move_array = queen_expose.instance_variable_get(:@moves)
+      expect(move_array).to eq([])
     end
   end
 end
