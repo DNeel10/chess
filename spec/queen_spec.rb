@@ -188,20 +188,25 @@ describe Queen do
       let(:board_grid) { Board.new }
       subject(:queen_expose) { described_class.new([0, 4], 'White', board_grid) }
       
-      before do
-        board_grid.update_piece([0, 4], queen_expose)
+      it "creates a deep copy of the board" do
+        test = queen_expose.create_test_board
+
+        expect(test.object_id).not_to eq(board_grid.object_id)
       end
 
-      it "removes moves that would expose the king" do
-        queen_expose.instance_variable_set(:@moves, [])
+      # TODO: Figure out how to build this test
+      it 'removes moves that put the king in check' do
+        board_grid.update_piece([0, 4], queen_expose)
         white_king = King.new([0, 5], 'White', board_grid)
-        black_rook = Rook.new([0, 0], 'Black', board_grid)
         board_grid.update_piece([0, 5], white_king)
+        black_rook = Rook.new([0, 0], 'Black', board_grid)
         board_grid.update_piece([0, 0], black_rook)
         board_grid.update_all_pieces
         queen_expose.legal_moves
-        move_array = queen_expose.instance_variable_get(:@moves)
-        expect(move_array).to match_array([[0, 3], [0, 2], [0, 1], [0, 0]])
+        legal_moves_array = queen_expose.instance_variable_get(:@moves)
+
+
+        expect(legal_moves_array).to match_array([])
       end
     end
   end

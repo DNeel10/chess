@@ -1,8 +1,9 @@
 # rewrite all moves into methods here, 
 # and include Movement in each piece class
-
+require_relative 'display'
 # create methods that check whether or not a move exposes a king
 module Movement
+  include Display
 
   def move_right
     queue = [position]
@@ -87,7 +88,7 @@ module Movement
 
       break if current[1] > 7 || current[0] > 7 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(new_move, color)
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
 
       return if board.opponent_piece?(current, color)
     end
@@ -147,27 +148,43 @@ module Movement
     end
   end
 
-  def king_exposed?(move, color = @color, board = @board)
-    king = find_king(color, board)
-    original_position = @position
+  def moves_expose_king?(move, color = @color)
+    test_board = create_test_board
+    king = find_king(color, test_board)
+    puts "test: #{test_board.grid[0][0].object_id}, real: #{board.grid[0][0].object_id}"
 
-    captured_piece = board.grid[move[0]][move[1]]
-    board.move_piece(@position)
-    board.update_piece(move, self)
+    test_move(move, test_board)
 
-    board.update_all_pieces
-    result = check_finder.in_check?(king)
-    board.grid[move[0]][move[1]] = captured_piece
-    board.grid[original_position[0]][original_position[1]] = self
-    puts result
-    result
+    display_board
+    test_board.grid.flatten.compact.each do |piece|
+      next if piece.color == king.color
+
+      puts "king position: #{king.position}"
+      puts "#{piece} moves: #{piece.moves}"
+      return true if piece.moves.include?(king.position)
+    end
+    false
   end
 
-  def find_king(color, board = @board)
+  def test_move(move, test_board)
+    puts "#{move}"
+    test_board.move_piece(self.position)
+    puts "old position: #{test_board.grid[self.position[0]][self.position[1]]}"
+    test_board.update_piece(move, self)
+    test_board.update_all_pieces
+    puts "new position: #{self}, position: #{self.position}"
+  end
+
+  def create_test_board(board = @board)
+    Marshal.load(Marshal.dump(board))
+  end
+
+  def find_king(color, board)
     board.grid.flatten.compact.each do |piece|
       next if piece.color != color
 
       return piece if piece.name == 'King'
     end
+    false
   end
 end

@@ -23,7 +23,6 @@ include Display
   # TODO: Rework puts/display methods.  Included here for testing purposes
   def player_turn(board)
     display_board
-    update_all_moves
 
     # select a piece to move
     puts 'Select a piece on the board'
@@ -37,7 +36,6 @@ include Display
     puts 'Select where to move your piece'
 
     move_piece(board)
-    board.update_all_pieces
   end
 
   def pick_initial_piece(board)

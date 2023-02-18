@@ -87,7 +87,7 @@ class Pawn
   def black_attack_moves
     # TODO : build moves to attack opponent pieces if diagonal
     black_attacking_moves.map { |x, y| [position[0] + x, position[1] + y] }
-                         .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color) }
+                         .each { |move| moves << move if (move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color)) }
   end
 
   def valid_selection?(coordinates, moves = @moves)
