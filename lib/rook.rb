@@ -38,7 +38,7 @@ class Rook
     moves
   end
 
-  def legal_move?(coordinates, moves = @moves)
+  def valid_selection?(coordinates, moves = @moves)
     moves.include?(coordinates)
   end
 

@@ -10,6 +10,6 @@
     "rubocop": true,
   },
   "window.zoomLevel": -1,
-  "terminal.integrated.fontSize" : 25,
+  "terminal.integrated.fontSize" : 20,
   "terminal.integrated.fontWeightBold" : true,
 }

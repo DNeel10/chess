@@ -28,6 +28,8 @@ class Board
   def update_piece(coordinates, piece)
     rank, file = coordinates
     grid[rank][file] = piece
+    return if piece.nil?
+    
     piece.position = coordinates
     piece.valid_moves
   end

@@ -16,7 +16,7 @@ module Movement
 
       break if current[1] > 7 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
 
       return if board.opponent_piece?(current, color)
     end
@@ -34,7 +34,7 @@ module Movement
 
       break if current[1] < 0 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
 
       return if board.opponent_piece?(current, color)
     end
@@ -52,8 +52,7 @@ module Movement
 
       break if current[0] > 7 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
-
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
       return if board.opponent_piece?(current, color)
     end
   end
@@ -70,7 +69,7 @@ module Movement
 
       break if current[0].negative? || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
     
       return if board.opponent_piece?(current, color)
     end
@@ -88,7 +87,7 @@ module Movement
 
       break if current[1] > 7 || current[0] > 7 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(new_move, color) || !king_exposed?(current)
+      moves << current if board.open_space?(current) || board.opponent_piece?(new_move, color)
 
       return if board.opponent_piece?(current, color)
     end
@@ -106,7 +105,7 @@ module Movement
 
       break if current[1] < 0 || current[0] > 7 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
     
       return if board.opponent_piece?(current, color)
     end
@@ -124,8 +123,8 @@ module Movement
 
       break if current[1] > 7 || current[0] < 0 || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
-    
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
+
       return if board.opponent_piece?(current, color)
     end
   end
@@ -142,7 +141,7 @@ module Movement
 
       break if current[1].negative? || current[0].negative? || board.players_piece?(current, color)
 
-      moves << current if board.open_space?(current) || board.opponent_piece?(current, color) || !king_exposed?(current)
+      moves << current if board.open_space?(current) || board.opponent_piece?(current, color)
 
       return if board.opponent_piece?(current, color)
     end
@@ -150,6 +149,7 @@ module Movement
 
   def king_exposed?(move, color = @color, board = @board)
     king = find_king(color, board)
+    original_position = @position
 
     captured_piece = board.grid[move[0]][move[1]]
     board.move_piece(@position)
@@ -157,8 +157,9 @@ module Movement
 
     board.update_all_pieces
     result = check_finder.in_check?(king)
-    board.update_piece(move, captured_piece)
-    p "#{result}"
+    board.grid[move[0]][move[1]] = captured_piece
+    board.grid[original_position[0]][original_position[1]] = self
+    puts result
     result
   end
 

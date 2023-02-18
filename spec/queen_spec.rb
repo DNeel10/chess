@@ -184,22 +184,25 @@ describe Queen do
   end
 
   context "a move would expose the king" do
-    let(:board_grid) { Board.new }
-    subject(:queen_expose) { described_class.new([0, 4], 'White', board_grid) }
-    
-    before do
-      board_grid.update_piece([0, 4], queen_expose)
-    end
+    describe "#legal_moves" do
+      let(:board_grid) { Board.new }
+      subject(:queen_expose) { described_class.new([0, 4], 'White', board_grid) }
+      
+      before do
+        board_grid.update_piece([0, 4], queen_expose)
+      end
 
-    it "doesn't add moves that would expose the king" do
-      queen_expose.instance_variable_set(:@moves, [])
-      white_king = King.new([0, 5], 'White', board_grid)
-      black_rook = Rook.new([0, 0], 'Black', board_grid)
-      board_grid.update_piece([0, 5], white_king)
-      board_grid.update_piece([0, 0], black_rook)
-      queen_expose.move_up
-      move_array = queen_expose.instance_variable_get(:@moves)
-      expect(move_array).to eq([])
+      it "removes moves that would expose the king" do
+        queen_expose.instance_variable_set(:@moves, [])
+        white_king = King.new([0, 5], 'White', board_grid)
+        black_rook = Rook.new([0, 0], 'Black', board_grid)
+        board_grid.update_piece([0, 5], white_king)
+        board_grid.update_piece([0, 0], black_rook)
+        board_grid.update_all_pieces
+        queen_expose.legal_moves
+        move_array = queen_expose.instance_variable_get(:@moves)
+        expect(move_array).to match_array([[0, 3], [0, 2], [0, 1], [0, 0]])
+      end
     end
   end
 end

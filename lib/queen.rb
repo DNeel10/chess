@@ -40,7 +40,7 @@ class Queen
     moves
   end
 
-  def legal_move?(coordinates, moves = @moves)
+  def valid_selection?(coordinates, moves = @moves)
     moves.include?(coordinates)
   end
 
@@ -48,5 +48,9 @@ class Queen
     @position = coordinates
     @moves = []
     valid_moves
+  end
+
+  def legal_moves
+    @moves.reject! { |move| king_exposed?(move)}
   end
 end

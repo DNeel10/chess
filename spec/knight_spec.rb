@@ -55,7 +55,7 @@ describe Knight do
         coords = [1, 3]
         knight_legal.instance_variable_set(:@moves, [[1, 3], [2, 2], [2, 0]])
         move_list = knight_legal.instance_variable_get(:@moves)
-        expect(knight_legal.legal_move?(coords, move_list)).to be true
+        expect(knight_legal.valid_selection?(coords, move_list)).to be true
       end
     end
 
@@ -69,7 +69,7 @@ describe Knight do
 
       it 'returns false' do
         coords = [7, 3]
-        legal_check = knight_legal.legal_move?(board_legal, coords)
+        legal_check = knight_legal.valid_selection?(board_legal, coords)
         expect(legal_check).to be false
       end
     end

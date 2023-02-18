@@ -132,7 +132,7 @@ include Display
   end
 
   def legal_move_for_piece?(coordinates, piece = @selected_piece)
-    piece.legal_move?(coordinates)
+    piece.valid_selection?(coordinates)
   end
 
   def select_king

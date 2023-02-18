@@ -90,7 +90,7 @@ class Pawn
                          .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color) }
   end
 
-  def legal_move?(coordinates, moves = @moves)
+  def valid_selection?(coordinates, moves = @moves)
     moves.include?(coordinates)
   end
 
