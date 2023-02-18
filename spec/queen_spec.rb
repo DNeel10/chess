@@ -3,6 +3,7 @@ require './lib/board'
 require './lib/knight'
 require './lib/king'
 require './lib/rook'
+require './lib/bishop'
 
 describe Queen do
   describe '#valid_moves' do
@@ -195,7 +196,7 @@ describe Queen do
       end
 
       # TODO: Figure out how to build this test
-      it 'removes moves that put the king in check' do
+      it 'removes horizontal moves that put the king in check' do
         board_grid.update_piece([0, 4], queen_expose)
         white_king = King.new([0, 5], 'White', board_grid)
         board_grid.update_piece([0, 5], white_king)
@@ -206,7 +207,22 @@ describe Queen do
         legal_moves_array = queen_expose.instance_variable_get(:@moves)
 
 
-        expect(legal_moves_array).to match_array([])
+        expect(legal_moves_array).to match_array([[0, 0], [0, 1], [0, 2], [0, 3]])
+      end
+
+      subject(:queen_expose) { described_class.new([4, 4], 'White', board_grid) }
+      it 'removes diagonal moves that put the king in check' do
+        board_grid.update_piece([4, 4], queen_expose)
+        white_king = King.new([5, 5], 'White', board_grid)
+        board_grid.update_piece([5, 5], white_king)
+        black_bishop = Bishop.new([0, 0], 'Black', board_grid)
+        board_grid.update_piece([0, 0], black_bishop)
+        board_grid.update_all_pieces
+        queen_expose.legal_moves
+        legal_moves_array = queen_expose.instance_variable_get(:@moves)
+
+
+        expect(legal_moves_array).to match_array([[0, 0], [1, 1], [2, 2], [3, 3]])
       end
     end
   end

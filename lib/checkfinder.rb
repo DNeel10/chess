@@ -17,7 +17,7 @@ class Checkfinder
   def would_be_in_check?(king, move, board = @board)
     board.grid.flatten.compact.each do |piece|
       next if piece.color == king.color
-      puts "#{piece.position} moves: #{piece.valid_moves}"
+
       return true if piece.valid_moves.include?(move)
     end
     false

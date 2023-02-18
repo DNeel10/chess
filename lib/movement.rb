@@ -1,10 +1,8 @@
 # rewrite all moves into methods here, 
 # and include Movement in each piece class
-require_relative 'display'
+
 # create methods that check whether or not a move exposes a king
 module Movement
-  include Display
-
   def move_right
     queue = [position]
 
@@ -148,31 +146,22 @@ module Movement
     end
   end
 
-  def moves_expose_king?(move, color = @color)
+  def moves_expose_king?(move, current_position, color = @color)
     test_board = create_test_board
-    king = find_king(color, test_board)
-    puts "test: #{test_board.grid[0][0].object_id}, real: #{board.grid[0][0].object_id}"
+    test_king = find_king(color, test_board)
 
-    test_move(move, test_board)
+    test_move(move, current_position, test_board)
+    return true if Checkfinder.new(test_board).in_check?(test_king)
 
-    display_board
-    test_board.grid.flatten.compact.each do |piece|
-      next if piece.color == king.color
-
-      puts "king position: #{king.position}"
-      puts "#{piece} moves: #{piece.moves}"
-      return true if piece.moves.include?(king.position)
-    end
     false
   end
 
-  def test_move(move, test_board)
-    puts "#{move}"
-    test_board.move_piece(self.position)
-    puts "old position: #{test_board.grid[self.position[0]][self.position[1]]}"
-    test_board.update_piece(move, self)
+  def test_move(test_move, current_position, test_board)
+    test_piece = test_board.grid[current_position[0]][current_position[1]]
+    test_board.move_piece(current_position)
+    test_board.update_piece(test_move, test_piece)
+
     test_board.update_all_pieces
-    puts "new position: #{self}, position: #{self.position}"
   end
 
   def create_test_board(board = @board)

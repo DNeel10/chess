@@ -51,7 +51,7 @@ class Queen
   end
 
   # TODO: Figure out why its not rejecting these moves
-  def legal_moves(moves = @moves)
-    @moves.reject! { |move| moves_expose_king?(move) }
+  def legal_moves
+    @moves.reject! { |move| moves_expose_king?(move, position) }
   end
 end
