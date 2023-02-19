@@ -42,6 +42,10 @@ class Rook
     moves.include?(coordinates)
   end
 
+  def legal_moves
+    @moves.reject! { |move| moves_expose_king?(move, position) }
+  end
+
   def update_position(coordinates)
     @position = coordinates
     @moves = []

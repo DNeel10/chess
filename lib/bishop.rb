@@ -1,6 +1,10 @@
+require_relative 'movement'
+
 class Bishop
   attr_reader :move_pattern, :color, :symbol
   attr_accessor :position, :moves, :name, :board
+  
+  include Movement
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
@@ -106,13 +110,17 @@ class Bishop
     end
   end
 
-  def legal_move?(coordinates, moves = @moves)
+  def valid_selection?(coordinates, moves = @moves)
     moves.include?(coordinates)
+  end
+
+  def legal_moves
+    @moves.reject! { |move| moves_expose_king?(move, position) }
   end
 
   def update_position(coordinates)
     @position = coordinates
     @moves = []
-    valid_moves
+    legal_moves
   end
 end

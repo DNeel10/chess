@@ -1,9 +1,12 @@
 require_relative 'board'
+require_relative 'movement'
 
 class Pawn
   attr_accessor :moves, :position, :first_move
   attr_reader :color, :attacking_moves, :name, :white_move_pattern, :board,
               :black_move_pattern, :black_attacking_moves, :white_attacking_moves, :symbol
+
+  include Movement
 
   def initialize(position, color, board)
     @position = position
@@ -17,7 +20,7 @@ class Pawn
     @white_attacking_moves = [[1, 1], [1, -1]]
     @black_attacking_moves = [[-1, 1], [-1, -1]]
     @moves = []
-    valid_moves
+    legal_moves
   end
 
   def to_s
@@ -94,10 +97,14 @@ class Pawn
     moves.include?(coordinates)
   end
 
+  def legal_moves
+    @moves.reject! { |move| moves_expose_king?(move, position) }
+  end
+
   def update_position(coordinates)
     @position = coordinates
     @first_move = false
     @moves = []
-    valid_moves
+    legal_moves
   end
 end

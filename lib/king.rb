@@ -1,8 +1,12 @@
 require_relative 'checkfinder'
+require_relative 'movement'
+
 
 class King
   attr_reader :move_pattern, :color, :name, :symbol
   attr_accessor :position, :moves, :board, :check_finder, :check
+
+  include Movement
 
   # what needs to be set up when a piece is created in the game
   def initialize(position, color, board)
@@ -30,11 +34,11 @@ class King
     @moves = []
 
     potential_moves.each do |move|
-      if board.open_space?(move)
-        moves << move unless check_finder.would_be_in_check?(self, move) == true
-      else
-        moves << move unless board.players_piece?(move, color)
-      end
+      # if board.open_space?(move)
+      #   moves << move unless check_finder.would_be_in_check?(self, move) == true
+      # else
+      moves << move unless board.players_piece?(move, color)
+      # end
     end
     moves
   end
@@ -46,6 +50,10 @@ class King
 
   def valid_selection?(coordinates, moves = @moves)
     moves.include?(coordinates)
+  end
+
+  def legal_moves
+    @moves.reject! { |move| moves_expose_king?(move, position) }
   end
 
   def update_position(coordinates)

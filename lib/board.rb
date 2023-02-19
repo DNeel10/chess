@@ -22,20 +22,37 @@ class Board
   def select_player_piece(coordinates, player_color)
     rank, file = coordinates
     player_piece = grid[rank][file] if players_piece?(coordinates, player_color)
-    player_piece if player_piece&.valid_moves != []
+    player_piece&.legal_moves
+    player_piece if player_piece&.moves != []
   end
 
   def update_piece(coordinates, piece)
     rank, file = coordinates
     grid[rank][file] = piece
     return if piece.nil?
-    
+
     piece.position = coordinates
     piece.valid_moves
   end
 
+  def set_piece(coordinates, piece)
+    rank, file = coordinates
+    grid[rank][file] = piece
+    return if piece.nil?
+
+    piece.position = coordinates
+  end
+
   def update_all_pieces
     grid.flatten.compact.each(&:valid_moves)
+  end
+
+  def update_player_pieces(color)
+    grid.flatten.compact.each do |piece|
+      next if piece.color != color
+
+      piece.legal_moves
+    end
   end
 
   def open_space?(coordinates)

@@ -23,11 +23,11 @@ include Display
   # TODO: Rework puts/display methods.  Included here for testing purposes
   def player_turn(board)
     display_board
-
     # select a piece to move
     puts 'Select a piece on the board'
 
     @selected_piece = pick_initial_piece(board)
+    @selected_piece.legal_moves
 
     # display options of where the piece can go
     puts "#{selected_piece.name}'s current move options: #{convert_entry(selected_piece.moves)}"
@@ -36,6 +36,7 @@ include Display
     puts 'Select where to move your piece'
 
     move_piece(board)
+    board.update_all_pieces
   end
 
   def pick_initial_piece(board)
