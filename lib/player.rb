@@ -137,7 +137,7 @@ include Display
   def select_king
     player_pieces.find { |piece| piece.name == 'King' }
   end
-  
+
   # Does this fit in this class?
   def build_board(board)
     player_pieces.each do |piece|
