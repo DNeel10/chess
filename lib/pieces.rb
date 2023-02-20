@@ -22,9 +22,6 @@ class Pieces
     case player_color
     when 'White'
       pieces << King.new([0, 4], player_color, board)
-      8.times do |i|
-        pieces << Pawn.new([1, i], player_color, board)
-      end
       pieces << Rook.new([0, 0], player_color, board)
       pieces << Rook.new([0, 7], player_color, board)
       pieces << Knight.new([0, 1], player_color, board)
@@ -32,12 +29,11 @@ class Pieces
       pieces << Bishop.new([0, 2], player_color, board)
       pieces << Bishop.new([0, 5], player_color, board)
       pieces << Queen.new([0, 3], player_color, board)
-
+      8.times do |i|
+        pieces << Pawn.new([1, i], player_color, board)
+      end
     else
       pieces << King.new([7, 4], player_color, board)
-      8.times do |i|
-        pieces << Pawn.new([6, i], player_color, board)
-      end
       pieces << Rook.new([7, 0], player_color, board)
       pieces << Rook.new([7, 7], player_color, board)
       pieces << Knight.new([7, 1], player_color, board)
@@ -45,7 +41,9 @@ class Pieces
       pieces << Bishop.new([7, 2], player_color, board)
       pieces << Bishop.new([7, 5], player_color, board)
       pieces << Queen.new([7, 3], player_color, board)
-
+      8.times do |i|
+        pieces << Pawn.new([6, i], player_color, board)
+      end
     end
     pieces
   end
