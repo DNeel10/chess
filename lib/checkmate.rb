@@ -1,18 +1,17 @@
 class Checkmate
+  attr_reader :board, :color
 
-  def initialize(board)
+  def initialize(board, color)
     @board = board
+    @color = color
   end
   
   def checkmate?
-    king.moves.empty? && blocking_moves.empty?
+    no_moves_left? && king_in_check?
   end
 
-  def blocking_moves(king)
-
-
-    # opponent piece coordinates Ox, Oy
-    # king position Coordinates Kx, Ky
-    # All player pieces check for moves that are between (Oy, Py) and (Ox, Px)
+  def no_moves_left?
+    board.player_pieces(@color).all? { |piece| piece.moves.empty? }
   end
+
 end

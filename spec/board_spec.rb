@@ -2,6 +2,8 @@ require './lib/board'
 require './lib/knight'
 require './lib/player'
 require './lib/pieces'
+require './lib/rook'
+require './lib/king'
 
 describe Board do
   describe "#select_player_piece" do
@@ -47,6 +49,32 @@ describe Board do
       board_grid[0][1] = knight
       board_update.move_piece(coordinate)
       expect(board_grid[0][1]).to be_nil
+    end
+  end
+
+  describe '#player_pieces' do
+    subject(:board_select) { described_class.new }
+
+    before do
+      white_knight = Knight.new([0, 1], 'White', board_select)
+      board_select.update_piece([0, 1], white_knight)
+      white_king = King.new([0, 3], 'White', board_select)
+      board_select.update_piece([0, 3], white_king)
+      white_rook = Rook.new([0, 0], 'White', board_select)
+      board_select.update_piece([0, 0], white_rook)
+      black_rook = Rook.new([7, 0], 'Black', board_select)
+      board_select.update_piece([7, 0], black_rook)
+    end
+
+    it 'returns an array of the proper length' do
+      white_piece_array = board_select.player_pieces('White')
+      expect(white_piece_array.length).to eq(3)
+    end
+
+    it 'the returned array contains only pieces with color "White"' do
+      white_piece_array = board_select.player_pieces('White')
+      only_white_pieces = white_piece_array.all? { |piece| piece.color == 'White' }
+      expect(only_white_pieces).to be true
     end
   end
 end

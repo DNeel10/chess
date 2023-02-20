@@ -70,4 +70,15 @@ class Board
     rank, file = coordinates
     grid[rank][file] = nil
   end
+
+  def player_pieces(color)
+    player_pieces = []
+    grid.flatten.compact.each do |piece|
+      next if piece.color != color
+
+      player_pieces << piece
+    end
+    player_pieces
+  end
+
 end
