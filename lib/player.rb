@@ -8,14 +8,13 @@ class Player
   attr_reader :color
   attr_accessor :selected_piece, :player_pieces, :pieces, :board, :king
 
-include Display
+  include Display
+
   def initialize(color, pieces, board)
     @color = color
     @board = board
     @player_pieces = pieces.generate_pieces(color, board)
     @selected_piece = nil
-    @king = select_king
-    @king_in_check = king.check
 
     build_board(board)
   end
