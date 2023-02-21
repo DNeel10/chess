@@ -3,10 +3,12 @@
 require_relative 'board'
 require_relative 'pieces'
 require_relative 'display'
+require_relative 'checkmate'
+require_relative 'checkfinder'
 
 class Player
   attr_reader :color
-  attr_accessor :selected_piece, :player_pieces, :pieces, :board, :king
+  attr_accessor :selected_piece, :player_pieces, :pieces, :board, :king, :check_finder
 
   include Display
 
@@ -15,13 +17,17 @@ class Player
     @board = board
     @player_pieces = pieces.generate_pieces(color, board)
     @selected_piece = nil
+    @check_finder = Checkfinder.new(board)
 
     build_board(board)
   end
 
   # TODO: Rework puts/display methods.  Included here for testing purposes
-  def player_turn(board)
+  def player_turn(board = @board)
     display_board
+    board.update_player_pieces(color)
+
+    return if checkmate? || stalemate?
     # select a piece to move
     puts 'Select a piece on the board'
 
@@ -142,5 +148,13 @@ class Player
     player_pieces.each do |piece|
       board.update_piece(piece.position, piece)
     end
+  end
+
+  def checkmate?
+    Checkmate.new(board, color, check_finder).checkmate?
+  end
+
+  def stalemate?
+    Checkmate.new(board, color, check_finder).stalemate?
   end
 end

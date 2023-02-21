@@ -48,11 +48,7 @@ class Board
   end
 
   def update_player_pieces(color)
-    grid.flatten.compact.each do |piece|
-      next if piece.color != color
-
-      piece.legal_moves
-    end
+    player_pieces(color).each { |piece| piece.legal_moves }
   end
 
   def open_space?(coordinates)
