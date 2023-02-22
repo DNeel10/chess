@@ -21,7 +21,7 @@ class Pawn
     @white_attacking_moves = [[1, 1], [1, -1]]
     @black_attacking_moves = [[-1, 1], [-1, -1]]
     @moves = []
-    legal_moves
+
   end
 
   def to_s
@@ -55,7 +55,8 @@ class Pawn
     else
       new_move = [position[0] + black_move_pattern.first[0], position[1] + black_move_pattern.first[1]]
     end
-    moves << new_move if board.open_space?(new_move)
+    # puts "#{color} #{position} #{new_move}"   WHAT IS GOING ON??
+    moves << new_move if new_move.all? { |n| n >= 0 && n <= 7 } && board.open_space?(new_move)
   end
 
   def initial_move
@@ -74,6 +75,32 @@ class Pawn
     else
       black_attack_moves
     end
+  end
+
+  def promote_piece(rank, file)
+    board.remove_piece([rank, file])
+
+    puts "Which piece would you like to promote to?"
+    puts 'Please select [Queen], [Rook], [Bishop], or [Knight]'
+    
+    loop do
+
+      promoted_piece = gets.chomp.downcase
+
+      case promoted_piece
+      when 'queen'
+        return board.update_piece([rank, file], Queen.new([rank, file], color, board))
+      when 'rook'
+        return board.update_piece([rank, file], Rook.new([rank, file], color, board))
+      when 'knight'
+        return board.update_piece([rank, file], Knight.new([rank, file], color, board))
+      when 'bishop'
+        return board.update_piece([rank, file], Bishop.new([rank, file], color, board))
+      else
+        puts 'That is not a valid promotion. Please select a valid piece'
+      end
+    end
+
   end
 
   def white_initial_moves
@@ -108,7 +135,10 @@ class Pawn
 
   def update_position(coordinates)
     @position = coordinates
+    rank, file = @position
     @first_move = false
+    promote_piece(rank, file) if rank == 7 || rank == 0
+
     @moves = []
     legal_moves
   end

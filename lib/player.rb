@@ -27,12 +27,12 @@ class Player
     display_board
     board.update_player_pieces(color)
 
-    return if checkmate? || stalemate?
+    # return if checkmate? || stalemate?
     # select a piece to move
     puts 'Select a piece on the board'
 
     @selected_piece = pick_initial_piece(board)
-    @selected_piece.legal_moves
+    # @selected_piece.legal_moves
 
     # display options of where the piece can go
     puts "#{selected_piece.name}'s current move options: #{convert_entry(selected_piece.moves)}"
