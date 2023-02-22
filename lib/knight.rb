@@ -1,6 +1,7 @@
 require_relative 'movement'
+require_relative 'piece'
 
-class Knight
+class Knight < Piece
   attr_reader :move_pattern, :color, :name, :symbol
   attr_accessor :position, :moves, :board
 
@@ -12,7 +13,8 @@ class Knight
     @color = color
     @board = board
     @name = 'Knight'
-    @symbol = to_fen
+    @symbol = to_symbol
+    @fen = to_fen
     @move_pattern = [[1, 2], [1, -2], [-1, 2], [-1, -2],
                      [2, 1], [2, -1], [-2, 1], [-2, -1]]
     @moves = []
@@ -22,38 +24,19 @@ class Knight
     "#{@symbol}"
   end
 
-  def to_fen
+  def to_symbol
     color == 'White' ? '♘' : '♞'
+  end
+
+  def to_fen
+    color == 'White' ? 'N' : 'n'
   end
 
   def valid_moves
     @moves = []
 
-    potential_moves.each do |move|
-      if board.open_space?(move)
-        moves << move
-      else
-        moves << move unless board.players_piece?(move, color)
-      end
-    end
+    step_moves
+
     moves
-  end
-
-  def potential_moves(position = @position)
-    move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
-                .select { |move| move.all? { |n| n >= 0 && n <= 7 } }
-  end
-
-  def valid_selection?(coordinates, moves = @moves)
-    moves.include?(coordinates)
-  end
-
-  def legal_moves
-    @moves.reject! { |move| moves_expose_king?(move, position) }
-  end
-
-  def update_position(coordinates)
-    @position = coordinates
-    legal_moves
   end
 end

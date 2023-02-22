@@ -146,6 +146,21 @@ module Movement
     end
   end
 
+  def step_moves
+    potential_moves.each do |move|
+      if board.open_space?(move)
+        moves << move
+      else
+        moves << move unless board.players_piece?(move, color)
+      end
+    end
+  end
+
+  def potential_moves(position = @position)
+    move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
+                .select { |move| move.all? { |n| n >= 0 && n <= 7 } }
+  end
+
   def moves_expose_king?(move, current_position, color = @color)
     test_board = create_test_board
     test_king = find_king(color, test_board)

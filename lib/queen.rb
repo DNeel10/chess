@@ -1,6 +1,7 @@
 require_relative 'movement'
+require_relative 'piece'
 
-class Queen
+class Queen < Piece
   attr_reader :move_pattern, :color, :name, :symbol
   attr_accessor :position, :moves, :board, :check_finder
 
@@ -15,7 +16,6 @@ class Queen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
-    @check_finder = Checkfinder.new(board)
   end
 
   def to_s
@@ -38,20 +38,5 @@ class Queen
     move_down_right
     move_down_left
     moves
-  end
-
-  def valid_selection?(coordinates, moves = @moves)
-    moves.include?(coordinates)
-  end
-
-  def update_position(coordinates)
-    @position = coordinates
-    @moves = []
-    valid_moves
-  end
-
-  # TODO: Figure out why its not rejecting these moves
-  def legal_moves
-    @moves.reject! { |move| moves_expose_king?(move, position) }
   end
 end

@@ -1,8 +1,8 @@
 require_relative 'checkfinder'
 require_relative 'movement'
+require_relative 'piece'
 
-
-class King
+class King < Piece
   attr_reader :move_pattern, :color, :name, :symbol
   attr_accessor :position, :moves, :board, :check_finder, :check
 
@@ -14,7 +14,8 @@ class King
     @color = color
     @board = board
     @name = 'King'
-    @symbol = to_fen
+    @symbol = to_symbol
+    @fen = to_fen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0],
                      [1, 1], [1, -1], [-1, 1], [-1, -1]]
     @moves = []
@@ -26,40 +27,20 @@ class King
     "#{@symbol}"
   end
 
-  def to_fen
+  def to_symbol
     color == 'White' ? '♔' : '♚'
+  end
+
+  def to_fen
+    color = 'White' ? 'K' : 'k'
   end
 
   def valid_moves
     @moves = []
 
-    potential_moves.each do |move|
-      # if board.open_space?(move)
-      #   moves << move unless check_finder.would_be_in_check?(self, move) == true
-      # else
-      moves << move unless board.players_piece?(move, color)
-      # end
-    end
+    step_moves
+
     moves
-  end
-
-  def potential_moves
-    move_pattern.map { |x, y| [position[0] + x, position[1] + y] }
-                .select { |move| move.all? { |n| n >= 0 && n <= 7 } }
-  end
-
-  def valid_selection?(coordinates, moves = @moves)
-    moves.include?(coordinates)
-  end
-
-  def legal_moves
-    @moves.reject! { |move| moves_expose_king?(move, position) }
-  end
-
-  def update_position(coordinates)
-    @position = coordinates
-    @moves = []
-    valid_moves
   end
 
   def currently_in_check?

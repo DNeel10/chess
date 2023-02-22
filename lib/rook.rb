@@ -1,7 +1,8 @@
 require_relative 'board'
 require_relative 'movement'
+require_relative 'Piece'
 
-class Rook
+class Rook < Piece
   attr_reader :move_pattern, :color, :name, :board, :symbol
   attr_accessor :position, :moves
 
@@ -13,7 +14,8 @@ class Rook
     @color = color
     @board = board
     @name = 'Rook'
-    @symbol = to_fen
+    @symbol = to_symbol
+    @fen = to_fen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0]]
     @moves = []
   end
@@ -22,8 +24,12 @@ class Rook
     "#{@symbol}"
   end
 
-  def to_fen
+  def to_symbol
     color == 'White' ? '♖' : '♜'
+  end
+
+  def to_fen
+    color == 'White' ? 'R' : 'r'
   end
 
   # rook can use move pattern in one (up, down, left, right) direction up to where another piece is
@@ -36,19 +42,5 @@ class Rook
     move_up
     move_down
     moves
-  end
-
-  def valid_selection?(coordinates, moves = @moves)
-    moves.include?(coordinates)
-  end
-
-  def legal_moves
-    @moves.reject! { |move| moves_expose_king?(move, position) }
-  end
-
-  def update_position(coordinates)
-    @position = coordinates
-    @moves = []
-    valid_moves
   end
 end
