@@ -33,7 +33,7 @@ class Pawn
   end
 
   def to_fen
-    color = 'White' ? 'P' : 'p'
+    color == 'White' ? 'P' : 'p'
   end
 
   def valid_moves

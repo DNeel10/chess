@@ -1,10 +1,10 @@
 require_relative 'board'
 require_relative 'movement'
-require_relative 'Piece'
+require_relative 'piece'
 
 class Rook < Piece
   attr_reader :move_pattern, :color, :name, :board, :symbol
-  attr_accessor :position, :moves
+  attr_accessor :position, :moves, :can_castle
 
   include Movement
 
@@ -17,6 +17,7 @@ class Rook < Piece
     @symbol = to_symbol
     @fen = to_fen
     @move_pattern = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    @can_castle = true
     @moves = []
   end
 
@@ -42,5 +43,11 @@ class Rook < Piece
     move_up
     move_down
     moves
+  end
+
+  def update_position(coordinates)
+    super
+    @can_castle = false
+    puts "can castle: #{@can_castle}, pos: #{@position}"
   end
 end

@@ -21,6 +21,7 @@ class King < Piece
     @moves = []
     @check_finder = Checkfinder.new(board)
     @check = currently_in_check?
+    @can_castle = true
   end
 
   def to_s
@@ -32,18 +33,24 @@ class King < Piece
   end
 
   def to_fen
-    color = 'White' ? 'K' : 'k'
+    color == 'White' ? 'K' : 'k'
   end
 
   def valid_moves
     @moves = []
 
     step_moves
+    # castle
 
     moves
   end
 
   def currently_in_check?
     check_finder.in_check?(self)
+  end
+
+  def update_position
+  super
+  @can_castle = false
   end
 end

@@ -161,6 +161,41 @@ module Movement
                 .select { |move| move.all? { |n| n >= 0 && n <= 7 } }
   end
 
+  # def castle
+  #   case @color
+  #   when 'White'
+  #     moves << [0, 0] if queen_side_open?
+  #     moves << [0, 7] if king_side_open?
+  #   else
+  #     moves << [7, 0] if queen_side_open?
+  #     moves << [7, 7] if king_side_open?
+  #   end
+  # end
+
+  def king_side_open?
+    case @color
+    when 'White'
+      castle_rank = 0
+      return true if board.grid[castle_rank][5].nil? && board.grid[castle_rank][6].nil?
+    else
+      castle_rank = 7
+      return true if board.grid[castle_rank][5].nil? && board.grid[castle_rank][6].nil?
+    end
+    false
+  end
+
+  def queen_side_open?
+    case @color
+    when 'White'
+      castle_rank = 0
+      return true if board.grid[castle_rank][3].nil? && board.grid[castle_rank][2].nil? && board.grid[castle_rank][1].nil?
+    else
+      castle_rank = 7
+      return true if board.grid[castle_rank][3].nil? && board.grid[castle_rank][2].nil? && board.grid[castle_rank][1].nil?
+    end
+    false
+  end
+
   def moves_expose_king?(move, current_position, color = @color)
     test_board = create_test_board
     test_king = find_king(color, test_board)

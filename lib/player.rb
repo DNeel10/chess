@@ -106,7 +106,6 @@ class Player
                                                         board.open_space?(coordinates)
       return capture_piece(coordinates, board, piece) if legal_move_for_piece?(coordinates, piece) &&
                                                          board.opponent_piece?(coordinates, color)
-
       puts 'Ineligible move. Please choose a valid move'
     end
   end
@@ -148,6 +147,7 @@ class Player
     player_pieces.each do |piece|
       board.update_piece(piece.position, piece)
     end
+    board.update_all_pieces
   end
 
   def checkmate?
