@@ -1,7 +1,8 @@
 require_relative 'board'
 require_relative 'movement'
+require_relative 'piece'
 
-class Pawn
+class Pawn < Piece
   attr_accessor :moves, :position, :first_move
   attr_reader :color, :attacking_moves, :name, :white_move_pattern, :board,
               :black_move_pattern, :black_attacking_moves, :white_attacking_moves, :symbol
@@ -39,13 +40,15 @@ class Pawn
   def valid_moves
     @moves = []
 
+    attack_moves
+
     case first_move
     when true
       initial_move
     else
       move_one_space
     end
-    attack_moves
+
   end
 
   def move_one_space
@@ -114,23 +117,19 @@ class Pawn
   end
 
   def white_attack_moves
-    # TODO : build moves to attack opponent pieces if diagonal
+    # build moves to attack opponent pieces if diagonal
     white_attacking_moves.map { |x, y| [position[0] + x, position[1] + y] }
                          .each { |move| moves << move if move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color) }
   end
 
   def black_attack_moves
-    # TODO : build moves to attack opponent pieces if diagonal
+    # build moves to attack opponent pieces if diagonal
     black_attacking_moves.map { |x, y| [position[0] + x, position[1] + y] }
                          .each { |move| moves << move if (move.all? { |n| n >= 0 && n <= 7 } && board.opponent_piece?(move, color)) }
   end
 
   def valid_selection?(coordinates, moves = @moves)
     moves.include?(coordinates)
-  end
-
-  def legal_moves
-    @moves.reject! { |move| moves_expose_king?(move, position) }
   end
 
   def update_position(coordinates)
@@ -140,6 +139,5 @@ class Pawn
     promote_piece(rank, file) if rank == 7 || rank == 0
 
     @moves = []
-    legal_moves
   end
 end

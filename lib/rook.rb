@@ -48,6 +48,5 @@ class Rook < Piece
   def update_position(coordinates)
     super
     @can_castle = false
-    puts "can castle: #{@can_castle}, pos: #{@position}"
   end
 end

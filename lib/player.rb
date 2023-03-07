@@ -24,15 +24,14 @@ class Player
 
   # TODO: Rework puts/display methods.  Included here for testing purposes
   def player_turn(board = @board)
+    puts "starting #{color} turn now"
     display_board
     board.update_player_pieces(color)
 
-    # return if checkmate? || stalemate?
     # select a piece to move
     puts 'Select a piece on the board'
 
     @selected_piece = pick_initial_piece(board)
-    # @selected_piece.legal_moves
 
     # display options of where the piece can go
     puts "#{selected_piece.name}'s current move options: #{convert_entry(selected_piece.moves)}"
@@ -41,7 +40,7 @@ class Player
     puts 'Select where to move your piece'
 
     move_piece(board)
-    board.update_all_pieces
+    board.update_player_pieces(color)
   end
 
   def pick_initial_piece(board)
@@ -106,6 +105,9 @@ class Player
                                                         board.open_space?(coordinates)
       return capture_piece(coordinates, board, piece) if legal_move_for_piece?(coordinates, piece) &&
                                                          board.opponent_piece?(coordinates, color)
+      return castle_move(coordinates, board, piece) if legal_move_for_piece?(coordinates, piece) &&
+                                                       cell_eligible_to_move?(coordinates)
+      
       puts 'Ineligible move. Please choose a valid move'
     end
   end
@@ -124,18 +126,27 @@ class Player
   end
 
   def occupy_space(coordinates, board, piece = @selected_piece)
-    update_piece_on_board(coordinates, board, piece)
+    update_piece_on_board(coordinates, board)
     update_piece_position(coordinates)
   end
 
   def capture_piece(coordinates, board, piece = @selected_piece)
     board.remove_piece(coordinates)
     update_piece_on_board(coordinates, board)
-    update_piece_position(coordinates, piece)
+    update_piece_position(coordinates)
+  end
+
+  def castle_move(coordinates, board, piece = @selected_piece)
+    board.move_piece(piece.position)
+    update_piece_position(coordinates)
   end
 
   def legal_move_for_piece?(coordinates, piece = @selected_piece)
     piece.valid_selection?(coordinates)
+  end
+
+  def cell_eligible_to_move?(coordinates)
+    return true if board.open_space?(coordinates) || @selected_piece.is_a?(King) && board.grid[coordinates[0]][coordinates[1]].is_a?(Rook)
   end
 
   def select_king

@@ -1,5 +1,6 @@
 # Super class for all pieces
 require_relative 'movement'
+require_relative 'evaluation'
 
 class Piece
   attr_accessor :position, :color, :board
@@ -17,7 +18,7 @@ class Piece
   end
 
   def legal_moves
-    @moves.reject! { |move| moves_expose_king?(move, position) }
+    @moves.reject! { |move| Evaluation.new(@board, @color).moves_expose_king?(move, position) }
   end
 
   def valid_selection?(coordinates, moves = @moves)
@@ -27,6 +28,5 @@ class Piece
   def update_position(coordinates)
     @position = coordinates
     @moves = []
-    valid_moves
   end
 end
