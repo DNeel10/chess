@@ -40,8 +40,6 @@ class Pawn < Piece
   def valid_moves
     @moves = []
 
-    attack_moves
-
     case first_move
     when true
       initial_move
@@ -49,6 +47,7 @@ class Pawn < Piece
       move_one_space
     end
 
+    attack_moves
   end
 
   def move_one_space

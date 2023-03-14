@@ -52,7 +52,7 @@ class King < Piece
 
   def update_position(coordinates)
     rank, file = coordinates
-    # figure out condition to run make_castle_moves
+
     make_castle_move(rank, file) if board.grid[rank][file].is_a?(Rook)
 
     @position = [rank, file]

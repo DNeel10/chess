@@ -18,8 +18,7 @@ module Display
   def draw_cell(rank, r_idx)
     rank.map.with_index do |cell, c_idx|
       piece_display(cell).background_color(r_idx, c_idx)
-    end
-        .join
+    end.join
   end
 
   def piece_display(piece)

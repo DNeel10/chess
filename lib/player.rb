@@ -25,14 +25,15 @@ class Player
   # TODO: Rework puts/display methods.  Included here for testing purposes
   def player_turn(board = @board)
     puts "starting #{color} turn now"
+    board.update_all_pieces
     display_board
     board.update_player_pieces(color)
 
     # select a piece to move
-    puts 'Select a piece on the board'
+    puts 'Select a piece on the board or type [save] to save the game, or [quit] to quit' 
 
     @selected_piece = pick_initial_piece(board)
-
+    return if @selected_piece == 'Save' || @selected_piece == 'Quit'
     # display options of where the piece can go
     puts "#{selected_piece.name}'s current move options: #{convert_entry(selected_piece.moves)}"
 
@@ -40,12 +41,13 @@ class Player
     puts 'Select where to move your piece'
 
     move_piece(board)
-    board.update_player_pieces(color)
+    # board.update_all_pieces
   end
 
   def pick_initial_piece(board)
     loop do
       coordinates = select_cell
+      return coordinates if coordinates == 'Save' || coordinates == 'Quit'
 
       return select_piece_from_board(coordinates, board) if select_piece_from_board(coordinates, board)
 
@@ -57,6 +59,7 @@ class Player
   def select_cell
     loop do
       user_input = gets.capitalize.chomp
+      return user_input if valid_entry?(user_input) && (user_input == 'Save' || user_input == 'Quit')
       return convert_entry(user_input) if valid_entry?(user_input)
 
       puts 'Invalid Selection. Please select a valid cell'
@@ -65,7 +68,7 @@ class Player
 
   # ensures the user is selecting a proper chess grid notation (ex. A4)
   def valid_entry?(input)
-    input.match?(/[A-H][1-8]/)
+    input.match?(/[A-H][1-8]$|^Save$|^Quit$/)
   end
 
   # returns an array with coordinates

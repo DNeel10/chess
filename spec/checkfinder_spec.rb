@@ -11,8 +11,9 @@ describe Checkfinder do
   describe '#in_check?' do
     it 'returns true if king is in check' do
       king = King.new([0, 4], 'White', board)
-      board.grid[0][4] = king
+      board.update_piece([0, 4], king)
       knight = Knight.new([1, 2], 'Black', board)
+      knight.valid_moves
       board.update_piece([1, 2], knight)
       expect(check_finder.in_check?(king)).to be true
     end

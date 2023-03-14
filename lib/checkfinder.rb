@@ -7,6 +7,7 @@ class Checkfinder
 
   def in_check?(king, board = @board)
     board.grid.flatten.compact.each do |piece|
+      next if piece == king
       next if piece.color == king.color
 
       return true if piece.moves.include?(king.position)
