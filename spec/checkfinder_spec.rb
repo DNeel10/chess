@@ -13,8 +13,8 @@ describe Checkfinder do
       king = King.new([0, 4], 'White', board)
       board.update_piece([0, 4], king)
       knight = Knight.new([1, 2], 'Black', board)
-      knight.valid_moves
       board.update_piece([1, 2], knight)
+      knight.valid_moves
       expect(check_finder.in_check?(king)).to be true
     end
 

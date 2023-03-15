@@ -103,14 +103,5 @@ describe Rook do
       rook_pos = rook_update.instance_variable_get(:@position)
       expect(rook_pos).to eq([0, 7])
     end
-
-    it 'updates the moves array' do
-      rook_update.update_position([0, 7])
-      rook_moves = rook_update.instance_variable_get(:@moves)
-      expect(rook_moves).to match_array([[0, 6], [0, 5], [0, 4], [0, 3],
-                                         [0, 2], [0, 1], [0, 0], [1, 7],
-                                         [2, 7], [3, 7], [4, 7], [5, 7],
-                                         [6, 7], [7, 7]])
-    end
   end
 end

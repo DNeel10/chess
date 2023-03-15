@@ -3,7 +3,7 @@ require_relative 'movement'
 require_relative 'piece'
 
 class Pawn < Piece
-  attr_accessor :moves, :position, :first_move
+  attr_accessor :moves, :position, :first_move, :previous_position
   attr_reader :color, :attacking_moves, :name, :white_move_pattern, :board,
               :black_move_pattern, :black_attacking_moves, :white_attacking_moves, :symbol
 
@@ -21,6 +21,7 @@ class Pawn < Piece
     @black_move_pattern = [[-1, 0], [-2, 0]]
     @white_attacking_moves = [[1, 1], [1, -1]]
     @black_attacking_moves = [[-1, 1], [-1, -1]]
+    @previous_position = position
     @moves = []
 
   end
@@ -39,6 +40,8 @@ class Pawn < Piece
 
   def valid_moves
     @moves = []
+    
+    add_en_passant_moves
 
     case first_move
     when true
@@ -48,6 +51,7 @@ class Pawn < Piece
     end
 
     attack_moves
+
   end
 
   def move_one_space
@@ -57,7 +61,6 @@ class Pawn < Piece
     else
       new_move = [position[0] + black_move_pattern.first[0], position[1] + black_move_pattern.first[1]]
     end
-    # puts "#{color} #{position} #{new_move}"   WHAT IS GOING ON??
     moves << new_move if new_move.all? { |n| n >= 0 && n <= 7 } && board.open_space?(new_move)
   end
 
@@ -102,7 +105,60 @@ class Pawn < Piece
         puts 'That is not a valid promotion. Please select a valid piece'
       end
     end
+  end
 
+  def add_en_passant_moves
+    curr_rank, curr_file = @position
+    case @color
+    when 'White'
+      return if curr_rank != 4
+      white_left_en_passant(curr_rank, curr_file)
+      white_right_en_passant(curr_rank, curr_file)
+    else
+      return if curr_rank != 3
+      black_left_en_passant(curr_rank, curr_file)
+      black_right_en_passant(curr_rank, curr_file)
+    end
+    # white rank: 4, black rank: 3
+    # board.last_moved_piece == piece being captured && piece.is_a?(Pawn)
+    # white board.last_moved_piece.previous_rank == 6, black board.last_moved_piece.previous_rank == 1
+  end
+
+  def make_en_passant_move(rank, file)
+    board.remove_piece([rank, file])
+
+  end
+
+  def white_left_en_passant(curr_rank, curr_file)
+    return if board.grid[curr_rank][curr_file - 1].nil?
+
+    if board.grid[curr_rank][curr_file - 1].is_a?(Pawn) && board.grid[curr_rank][curr_file - 1] == board.last_moved_piece
+      @moves << [curr_rank + 1, curr_file - 1] if board.grid[curr_rank][curr_file - 1].previous_position[0] == 6
+    end
+  end
+
+  def white_right_en_passant(curr_rank, curr_file)
+    return if board.grid[curr_rank][curr_file + 1].nil?
+
+    if board.grid[curr_rank][curr_file + 1].is_a?(Pawn) && board.grid[curr_rank][curr_file + 1] == board.last_moved_piece
+      @moves << [curr_rank + 1, curr_file + 1] if board.grid[curr_rank][curr_file + 1].previous_position[0] == 6
+    end
+  end
+
+  def black_left_en_passant(curr_rank, curr_file)
+    return if board.grid[curr_rank][curr_file - 1].nil?
+
+    if board.grid[curr_rank][curr_file - 1].is_a?(Pawn) && board.grid[curr_rank][curr_file - 1] == board.last_moved_piece
+      @moves << [curr_rank - 1, curr_file - 1] if board.grid[curr_rank][curr_file - 1].previous_position[0] == 1
+    end
+  end
+
+  def black_right_en_passant(curr_rank, curr_file)
+    return if board.grid[curr_rank][curr_file + 1].nil?
+
+    if board.grid[curr_rank][curr_file + 1].is_a?(Pawn) && board.grid[curr_rank][curr_file + 1] == board.last_moved_piece
+      @moves << [curr_rank - 1, curr_file + 1] if board.grid[curr_rank][curr_file + 1].previous_position[0] == 1
+    end
   end
 
   def white_initial_moves
@@ -132,11 +188,14 @@ class Pawn < Piece
   end
 
   def update_position(coordinates)
+    c_rank, c_file = coordinates
     @position = coordinates
-    rank, file = @position
+    p_rank, p_file = @position
     @first_move = false
-    promote_piece(rank, file) if rank == 7 || rank == 0
-
+    board.last_moved_piece = self
+    promote_piece(p_rank, p_file) if p_rank == 7 || p_rank == 0
+    make_en_passant_move(c_rank - 1, c_file) if board.grid[c_rank - 1][c_file].is_a?(Pawn) && board.opponent_piece?([c_rank - 1, c_file], color)
+    make_en_passant_move(c_rank + 1, c_file) if board.grid[c_rank + 1][c_file].is_a?(Pawn) && board.opponent_piece?([c_rank + 1, c_file], color)
     @moves = []
   end
 end

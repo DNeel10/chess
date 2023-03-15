@@ -39,6 +39,8 @@ class Player
 
     # move the selected piece
     puts 'Select where to move your piece'
+    puts "#{@selected_piece.color}#{@selected_piece} position: #{@selected_piece.position}"
+    puts "LMP: #{board.last_moved_piece.position}" unless board.last_moved_piece.nil?
 
     move_piece(board)
     # board.update_all_pieces

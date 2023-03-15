@@ -1,12 +1,13 @@
 require_relative 'colorable_string'
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :last_moved_piece
 
   # using ColorableString
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
+    @last_moved_piece = nil
   end
 
   def players_piece?(coordinates, player_color)
@@ -29,6 +30,7 @@ class Board
     return if piece.nil?
     rank, file = coordinates
     grid[rank][file] = piece
+    piece.previous_position = piece.position
     piece.position = coordinates 
   end
 
@@ -74,5 +76,4 @@ class Board
     end
     player_pieces
   end
-
 end

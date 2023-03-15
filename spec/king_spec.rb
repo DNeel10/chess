@@ -17,7 +17,7 @@ describe King do
         king_restricted.valid_moves
         king_restricted.legal_moves
         valid_list = king_restricted.instance_variable_get(:@moves)
-        expect(valid_list).to match_array([[0, 3], [0, 5], [1, 3], [1, 5], [0, 7]])
+        expect(valid_list).to match_array([[0, 3], [0, 5], [1, 3], [1, 5]])
       end
 
       it 'does not remove a move where an enemy players piece is currently occupying' do

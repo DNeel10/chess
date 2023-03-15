@@ -51,7 +51,8 @@ module Serialize
     find_game_file
     select_game_file
     load_game_file
-    play_game
     File.delete(@selection) if File.exist?(@selection)
+    play_game
+
   end
 end

@@ -17,12 +17,16 @@ describe Checkmate do
       before do
         black_rook = Rook.new([1, 0], 'Black', board)
         board.update_piece([1, 0], black_rook)
+        black_rook.position = [1, 0]
         black_queen = Queen.new([0, 0], 'Black', board)
         board.update_piece([0, 0], black_queen)
+        black_queen.position = [0, 0]
         white_king = King.new([0, 4], 'White', board)
         board.update_piece([0, 4], white_king)
+        white_king.position = [0, 4]
         board.update_all_pieces
         white_king.legal_moves
+        puts "#{white_king.moves}" 
       end
 
       it 'returns true when the available white pieces all have empty move arrays' do

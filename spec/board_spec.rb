@@ -4,6 +4,7 @@ require './lib/player'
 require './lib/pieces'
 require './lib/rook'
 require './lib/king'
+require './lib/pawn'
 
 describe Board do
   describe "#select_player_piece" do
@@ -75,6 +76,28 @@ describe Board do
       white_piece_array = board_select.player_pieces('White')
       only_white_pieces = white_piece_array.all? { |piece| piece.color == 'White' }
       expect(only_white_pieces).to be true
+    end
+  end
+
+  describe 'last_moved' do
+    subject(:board_last) { described_class.new }
+    let(:white_pawn) { Pawn.new([1, 0], 'White', board_last) }
+    let(:black_pawn) { Pawn.new([6, 0], 'Black', board_last) }
+
+    before do
+      board_last.update_piece([1, 0], white_pawn)
+      board_last.update_piece([6, 0], black_pawn)
+    end
+
+    it 'returns the pawn that moved last' do
+      white_pawn.update_position([3, 0])
+      expect(board_last.last_moved_piece).to eq(white_pawn)
+    end
+
+    it 'updates @last_moved_pawn once another pawn moves' do
+      white_pawn.update_position([3, 0])
+      black_pawn.update_position([4, 0])
+      expect(board_last.last_moved_piece).to eq(black_pawn)
     end
   end
 end

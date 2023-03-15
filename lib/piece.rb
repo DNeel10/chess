@@ -3,7 +3,7 @@ require_relative 'movement'
 require_relative 'evaluation'
 
 class Piece
-  attr_accessor :position, :color, :board
+  attr_accessor :position, :color, :board, :previous_position
 
   include Movement
 
@@ -27,6 +27,7 @@ class Piece
 
   def update_position(coordinates)
     @position = coordinates
+    board.last_moved_piece = self
     @moves = []
   end
 end
